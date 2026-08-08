@@ -43,10 +43,15 @@ exports.handler = async (event) => {
     };
   }
 
-  // Données du formulaire envoyées vers Airtable
+  // Conversion du téléphone pour le champ Airtable "Numéro #"
+  const telephone = Number(
+    String(lead.telephone || '').replace(/\D/g, '')
+  );
+
+  // Mapping des données du formulaire vers les colonnes Airtable
   const fields = {
     'Nom et prénom': lead.nomPrenom || '',
-    'N° telephone (fx)': lead.telephone || '',
+    'N° telephone (fx)': telephone,
     'Statut professionnel': lead.csp || '',
     'Situation familiale': lead.situationFamiliale || '',
     'Objectifs': Array.isArray(lead.objectifs)
