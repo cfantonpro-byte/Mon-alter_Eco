@@ -73,7 +73,7 @@ exports.handler = async (event) => {
 
     "Ville": lead.ville || "",
 
-    "Code Postale": lead.codePostal || "",
+    "Code postal": lead.codePostal || "",
 
     "Objectifs": Array.isArray(lead.objectifs)
       ? lead.objectifs
