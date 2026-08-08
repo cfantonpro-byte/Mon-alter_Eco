@@ -1,48 +1,58 @@
 // netlify/functions/submit-lead.js
 // Envoie les données du formulaire vers Airtable après vérification SMS
-// Variables d'environnement requises :
-//   AIRTABLE_API_KEY  — Personal Access Token Airtable (commence par pat...)
-//   AIRTABLE_BASE_ID  — ID de la base Airtable (commence par app...)
-//   AIRTABLE_TABLE    — Nom exact de la table (ex: "Leads")
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: JSON.stringify({ error: 'Method not allowed' }) };
+    return {
+      statusCode: 405,
+      body: JSON.stringify({ error: 'Method not allowed' })
+    };
   }
 
   let lead;
+
   try {
     lead = JSON.parse(event.body);
   } catch {
-    return { statusCode: 400, body: JSON.stringify({ error: 'Corps de requête invalide' }) };
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: 'Corps de requête invalide' })
+    };
   }
 
-  const apiKey  = process.env.AIRTABLE_API_KEY;
-  const baseId  = process.env.AIRTABLE_BASE_ID;
-  const table   = process.env.AIRTABLE_TABLE || 'Leads';
+  // Variables Netlify
+  const apiKey = process.env.AIRTABLE_TOKEN;
+  const baseId = process.env.AIRTABLE_BASE_ID;
+  const table = process.env.AIRTABLE_TABLE_NAME || 'Leads';
 
-  if (!apiKey || !baseId) {
+  if (!apiKey || !baseId || !table) {
     console.error('Variables Airtable manquantes');
-    return { statusCode: 500, body: JSON.stringify({ error: 'Configuration serveur incomplète' }) };
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        error: 'Configuration serveur incomplète'
+      })
+    };
   }
 
   // Mapping des données du formulaire vers les colonnes Airtable
-  // Adaptez les noms de colonnes ci-dessous pour correspondre à votre table
   const fields = {
-    'Nom et prénom':        lead.nomPrenom          || '',
-    'Téléphone':            lead.telephone          || '',
-    'Statut professionnel': lead.csp               || '',
-    'Situation familiale':  lead.situationFamiliale || '',
-    'Objectifs':            Array.isArray(lead.objectifs) ? lead.objectifs.join(', ') : '',
-    'Imposition annuelle':  lead.impositionAnnuelle || '',
-    'Épargne mensuelle':    lead.effortEpargne      || '',
-    'Épargne totale':       lead.epargneTotale      || '',
-    'Ville':                lead.ville              || '',
-    'Code postal':          lead.codePostal         || '',
-    'Âge':                  lead.age                || '',
-    'Consentement':         lead.consentement       || '',
-    'Email':                lead.emailConsentement  || '',
-    'Source':               'Mon Alter-Eco – Site web',
+    'Nom et prénom': lead.nomPrenom || '',
+    'Téléphone': lead.telephone || '',
+    'Statut professionnel': lead.csp || '',
+    'Situation familiale': lead.situationFamiliale || '',
+    'Objectifs': Array.isArray(lead.objectifs)
+      ? lead.objectifs.join(', ')
+      : '',
+    'Imposition annuelle': lead.impositionAnnuelle || '',
+    'Épargne mensuelle': lead.effortEpargne || '',
+    'Épargne totale': lead.epargneTotale || '',
+    'Ville': lead.ville || '',
+    'Code postal': lead.codePostal || '',
+    'Âge': lead.age || '',
+    'Consentement': lead.consentement || '',
+    'Email': lead.emailConsentement || '',
+    'Source': 'Mon Alter-Eco – Site web',
   };
 
   try {
@@ -62,18 +72,31 @@ exports.handler = async (event) => {
 
     if (!response.ok) {
       console.error('Erreur Airtable:', data);
+
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: data.error?.message || 'Erreur Airtable' }),
+        body: JSON.stringify({
+          error: data.error?.message || 'Erreur Airtable'
+        }),
       };
     }
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ success: true, id: data.id }),
+      body: JSON.stringify({
+        success: true,
+        id: data.id
+      }),
     };
+
   } catch (err) {
     console.error('Erreur réseau:', err);
-    return { statusCode: 500, body: JSON.stringify({ error: 'Erreur serveur inattendue' }) };
+
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        error: 'Erreur serveur inattendue'
+      }),
+    };
   }
 };
