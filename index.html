@@ -48,8 +48,8 @@
   <meta name="twitter:image" content="https://mon-alter-eco.netlify.app/assets/preview.gif">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="app-shell.css?v=091515i">
-<link rel="stylesheet" href="layout-editor.css?v=091212a">
+<link rel="stylesheet" href="css/app-shell.css?v=091515i">
+<link rel="stylesheet" href="tools/layout-editor.css?v=091212a">
 <style>
 #app-topbar,#app-tabbar{display:none}
 body.show-form #app-topbar,body.show-form #app-tabbar{display:block}
@@ -1358,12 +1358,12 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
 /* Nouvelle page Épargne : poignées fixes et icônes premium */
 .show-form #s5 input[type=range]::-webkit-slider-thumb{
   width:34px;height:34px;margin-top:-11px;border:0;border-radius:50%;
-  background:transparent url('Puce_jauge-On.png') center/contain no-repeat;
+  background:transparent url('assets/ui/Puce_jauge-On.png') center/contain no-repeat;
   box-shadow:none;filter:drop-shadow(0 3px 4px rgba(8,38,74,.22));
 }
 .show-form #s5 input[type=range]::-moz-range-thumb{
   width:34px;height:34px;border:0;border-radius:50%;
-  background:transparent url('Puce_jauge-On.png') center/contain no-repeat;
+  background:transparent url('assets/ui/Puce_jauge-On.png') center/contain no-repeat;
   box-shadow:none;filter:drop-shadow(0 3px 4px rgba(8,38,74,.22));
 }
 .show-form #s5 input[type=range]::-webkit-slider-runnable-track{
@@ -1378,8 +1378,8 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
 .show-form #s5 input[type=range]::-moz-range-progress{
   height:12px;border:0;border-radius:999px;background:linear-gradient(90deg,#092e70,#117edb);
 }
-.show-form #s5 input[type=range]:not([data-touched])::-webkit-slider-thumb{background-image:url('Puce_jauge-ff.png')}
-.show-form #s5 input[type=range]:not([data-touched])::-moz-range-thumb{background-image:url('Puce_jauge-ff.png')}
+.show-form #s5 input[type=range]:not([data-touched])::-webkit-slider-thumb{background-image:url('assets/ui/Puce_jauge-ff.png')}
+.show-form #s5 input[type=range]:not([data-touched])::-moz-range-thumb{background-image:url('assets/ui/Puce_jauge-ff.png')}
 
 /* Ajustements ciblés : accueil et derniers écrans du questionnaire */
 .savings-help{color:#60778d;font-size:11px;line-height:1.35}
@@ -1851,7 +1851,7 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
  .show-form #s6>.step-reassure{margin-top:2px!important}
 }
 </style>
-<link rel="stylesheet" href="validated-layout.css?v=091515l">
+<link rel="stylesheet" href="css/validated-layout.css?v=091515l">
 <style>
 .show-form #s1.active .opt-icon img,.show-form #s2.active .opt-icon img{transform:scale(.92)!important}
 .show-form #s8 .potential-gauge-needle{width:33%!important}
@@ -1927,7 +1927,7 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
   <img src="assets/landing-mobile-approved-reference.png" alt="Découvrez le vrai potentiel de votre patrimoine">
   <section class="approved-mobile-hero">
     <div class="approved-mobile-nav"><span class="mini-menu"><i></i><i></i><i></i></span><a class="approved-mobile-logo-link" href="./index.html" aria-label="Retour à l'accueil"><img class="approved-mobile-logo" src="assets/logo-white-gold-transparent.png" alt="Mon Alter-€co"></a><img class="approved-mobile-guide" src="assets/walter-chat-avatar.png" alt="Walter, votre guide"></div>
-    <div class="approved-mobile-copy"><div class="approved-mobile-kicker">Votre étude personnalisée</div><h1>Découvrez<br>le vrai potentiel<br>de votre <em>patrimoine</em></h1><p>Une première analyse claire de votre situation,<br>de votre potentiel et des pistes à explorer.</p><img class="approved-mobile-benefits" src="Icone_accueil.png" alt="2 minutes, gratuit et sans engagement"></div>
+    <div class="approved-mobile-copy"><div class="approved-mobile-kicker">Votre étude personnalisée</div><h1>Découvrez<br>le vrai potentiel<br>de votre <em>patrimoine</em></h1><p>Une première analyse claire de votre situation,<br>de votre potentiel et des pistes à explorer.</p><img class="approved-mobile-benefits" src="assets/ui/Icone_accueil.png" alt="2 minutes, gratuit et sans engagement"></div>
   </section>
   <section class="approved-mobile-summary" aria-label="Les avantages de votre étude">
     <img class="approved-summary-reference" src="assets/home-benefits-v3.png" alt="Une analyse en deux minutes, gratuite, sans engagement et confidentielle">
@@ -1937,7 +1937,7 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
         <source src="assets/start-analysis-button-animated.mp4" type="video/mp4">
       </video>
     </button>
-    <div class="approved-summary-slice approved-summary-trust" aria-hidden="true"><img src="Bulle-accueil_bottom.png" alt=""></div>
+    <div class="approved-summary-slice approved-summary-trust" aria-hidden="true"><img src="assets/ui/Bulle-accueil_bottom.png" alt=""></div>
     <header class="approved-summary-heading">
       <h2>Une analyse <em>sur mesure</em></h2>
       <p>Des réponses claires pour vos projets</p>
@@ -2059,9 +2059,9 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
 
       <div class="genie-row">
         <div class="bubble2">
-          <img class="walter-dialog-line walter-dialog-line-top" src="Walter-dialog-top-symmetric.png" alt="" aria-hidden="true">
+          <img class="walter-dialog-line walter-dialog-line-top" src="assets/ui/Walter-dialog-top-symmetric.png" alt="" aria-hidden="true">
           <div class="b2-text" id="gtxt">Très bien, commençons. Quelques questions simples pour personnaliser votre analyse.</div>
-          <img class="walter-dialog-line walter-dialog-line-bottom" src="Walter-dialog-bottom-symmetric.png" alt="" aria-hidden="true">
+          <img class="walter-dialog-line walter-dialog-line-bottom" src="assets/ui/Walter-dialog-bottom-symmetric.png" alt="" aria-hidden="true">
         </div>
       </div>
 
@@ -2280,8 +2280,8 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
 
 </section>
 
-<script src="app-shell.js?v=091118"></script>
-<script src="study-engine.js?v=091515g"></script>
+<script src="js/app-shell.js?v=091118"></script>
+<script src="js/study-engine.js?v=091515g"></script>
 <script>
 // ===== PRELOADER =====
 (function(){
@@ -2419,7 +2419,7 @@ function updateHeaderWalter(step){
   avatar.style.visibility=isAnalysis?'hidden':'';
   avatar.disabled=isAnalysis;
   avatar.classList.toggle('shell-avatar--result',isPreview);
-  const stepGenie={3:'Icone_Genie/Genie_objectif.png',4:'Icone_Genie/Genie_impots.png',5:'Icone_Genie/Genie_epargne.png',6:'Icone_Genie/Genie_france.png',8:'Genie_telephone.PNG'};
+  const stepGenie={3:'assets/genie/Genie_objectif.png',4:'assets/genie/Genie_impots.png',5:'assets/genie/Genie_epargne.png',6:'assets/genie/Genie_france.png',8:'assets/ui/Genie_telephone.PNG'};
   if(image)image.src=stepGenie[step]||'assets/walter-chat-avatar.png';
 }
 function showWalterToggleHint(){
@@ -3139,7 +3139,7 @@ function openPersonalizedStudy(){
 <!-- Lien mentions légales bas de page -->
 <!-- mentions légales modal trigger est dans la carte du formulaire -->
 
-<script src="layout-editor.js?v=091212b"></script>
+<script src="tools/layout-editor.js?v=091212b"></script>
 
 </body>
 </html>
