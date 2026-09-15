@@ -1855,6 +1855,26 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
 .show-form #s1.active .opt-icon img,.show-form #s2.active .opt-icon img{transform:scale(.92)!important}
 .show-form #s8 .potential-gauge-needle{width:33%!important}
 #field-city[hidden],#city-lookup-status[hidden]{display:none!important}
+
+/* Hero desktop consolidé (remplace ~15 blocs concurrents accumulés au fil des refontes,
+   cf. lignes 565-849) : une seule source de vérité, testée à 375/768/1024/1440px. */
+.page-home .hero-right{display:none}
+@media(min-width:881px){
+  .page-home .hero-right{
+    display:block;position:absolute;inset:0;z-index:0;overflow:hidden;border:0;
+    background:linear-gradient(90deg,rgba(4,31,57,.99) 0%,rgba(4,32,59,.9) 44%,rgba(4,31,57,.08) 78%),url('assets/home-walter-piggybank-mobile-v2.png');
+    background-size:cover;background-position:center;
+  }
+  .page-home .hero-right::before{
+    content:"";position:absolute;width:min(45vw,560px);height:min(45vw,560px);right:5%;top:10%;
+    border:1px solid rgba(237,190,87,.48);border-radius:50%;
+  }
+  .page-home .hero-right::after{display:none}
+  .page-home .hero-right>.hero-analysis-card,
+  .page-home .hero-right>.genie-halo,
+  .page-home .hero-right>.sparkle,
+  .page-home .hero-right>.genie-img-wrap{display:none}
+}
 </style>
 </head>
 <body>
