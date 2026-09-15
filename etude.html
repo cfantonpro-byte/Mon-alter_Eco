@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Votre étude patrimoniale personnalisée Mon Alter-€co.">
+  <title>Mon Alter-eco : Génie de l'investissement</title>
+  <link rel="icon" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="app-shell.css?v=091515i">
+  <link rel="stylesheet" href="etude.css?v=091515f">
+  <link rel="stylesheet" href="study-editor.css?v=091402b">
+</head>
+<body class="study-page">
+  <div id="app-topbar"></div>
+  <main id="study"></main>
+  <div id="app-tabbar"></div>
+  <div class="solution-drawer" id="solution-drawer" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="drawer-title">
+    <button class="drawer-close" type="button" aria-label="Fermer">×</button>
+    <div class="drawer-visual" aria-hidden="true" id="drawer-visual">
+      <img id="drawer-illustration" class="drawer-illustration" alt="">
+      <div class="drawer-orbit"><i></i><b id="drawer-symbol">€</b></div>
+      <span id="drawer-index">01</span>
+    </div>
+    <div class="drawer-content">
+      <div class="eyebrow" id="drawer-type"></div>
+      <h2 id="drawer-title"></h2>
+      <p class="drawer-benefit" id="drawer-benefit"></p>
+      <div class="drawer-reason"><span>Pourquoi cette piste apparaît</span><strong id="drawer-reasons"></strong></div>
+      <div class="drawer-grid">
+        <div><div class="label">À vérifier avant d’aller plus loin</div><ul id="drawer-conditions"></ul></div>
+        <div class="drawer-alert"><div class="label">Point de vigilance</div><p id="drawer-vigilance"></p></div>
+      </div>
+      <a class="cta drawer-source" id="drawer-source" href="#" target="_blank" rel="noopener">Consulter la présentation officielle</a>
+      <p class="drawer-note">Piste pédagogique à approfondir. Elle ne constitue pas une recommandation personnalisée ni une garantie de performance.</p>
+    </div>
+  </div>
+  <footer>Cette étude est une analyse pédagogique fondée sur vos réponses. Les projections sont des estimations, non des garanties, et ne constituent pas un conseil financier réglementé.</footer>
+  <script src="study-engine.js?v=091515g"></script>
+  <script src="app-shell.js"></script>
+  <dialog id="analysis-email-dialog" class="analysis-email-dialog" aria-labelledby="email-dialog-title"><h2 id="email-dialog-title">Votre analyse par mail</h2><p>L’envoi par e-mail n’est pas encore disponible dans cette version de prévisualisation. Aucune donnée n’est envoyée.</p><form method="dialog"><button class="cta-gold">Fermer</button></form></dialog>
+  <script src="etude.js?v=091515i"></script>
+  <script src="study-editor.js?v=091402b"></script>
+</body>
+</html>

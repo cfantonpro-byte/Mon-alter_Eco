@@ -1,0 +1,100 @@
+/* Chrome partagé : barre du haut, indicateur d'étapes, barre d'onglets du bas.
+   Chargé par index.html et study.html. Variables propres pour ne pas dépendre
+   des deux palettes existantes (qui ne se recouvrent pas complètement). */
+:root{
+  --shell-navy:#052847;
+  --shell-navy-2:#0a3d67;
+  --shell-gold:#c9a45c;
+  --shell-gold-soft:#e6c47f;
+  --shell-cream:#f4efe6;
+  --shell-ink:#15120e;
+  --shell-line:rgba(255,255,255,.14);
+  --shell-muted:rgba(255,255,255,.6);
+}
+body.has-app-shell{padding-top:116px;padding-bottom:61px}
+@media(max-width:600px){body.has-app-shell{padding-top:119px;padding-bottom:72px}}
+
+#app-topbar{position:fixed;top:0;left:0;right:0;z-index:200;background:linear-gradient(100deg,var(--shell-navy),var(--shell-navy-2));box-shadow:0 2px 20px rgba(0,0,0,.25)}
+#app-tabbar{position:fixed;bottom:0;left:0;right:0;z-index:200;background:var(--shell-navy);border-top:1px solid var(--shell-line)}
+
+.shell-bar{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:14px;max-height:70px;padding:12px clamp(16px,5vw,40px) 8px;opacity:1;overflow:visible}
+.shell-menu-btn{background:none;border:0;color:#fff;padding:6px;margin:-6px;cursor:pointer;display:flex;border-radius:8px;transition:background .2s}
+.shell-menu-btn:hover{background:rgba(255,255,255,.08)}
+.shell-menu-wrap{position:relative;z-index:1001;display:flex}
+.shell-menu-panel{position:absolute;z-index:1002;left:0;top:calc(100% + 12px);width:230px;padding:7px;background:#fffdf8;border:1px solid rgba(201,164,92,.3);border-radius:10px;box-shadow:0 18px 45px rgba(4,25,47,.22)}
+.shell-menu-panel[hidden]{display:none}
+.shell-menu-panel button{width:100%;padding:11px 12px;border:0;border-radius:7px;background:transparent;color:#113a61;text-align:left;font:500 12px 'DM Sans',Arial,sans-serif;cursor:pointer}
+.shell-menu-panel button:hover{background:#f7efdf;color:#93651c}
+.shell-logo{display:flex;align-items:center;height:39px;color:#fff;text-decoration:none}
+.shell-logo img{display:block;width:auto;height:100%;object-fit:contain}
+.shell-logo span{font-weight:700}
+.shell-logo b{color:var(--shell-gold-soft);font-weight:700}
+.shell-avatar{width:44px;height:44px;padding:0;border:0;border-radius:50%;display:flex;align-items:center;justify-content:center;background:transparent;color:#fff;flex-shrink:0;cursor:default;overflow:visible;filter:drop-shadow(0 4px 9px rgba(0,0,0,.24))}
+.shell-avatar img{display:block;width:100%;height:100%;object-fit:contain;border-radius:50%;transform:scale(1.1)}
+.shell-avatar[data-walter-toggle]{transition:transform .22s ease,filter .22s ease,opacity .22s ease}
+.shell-avatar[data-walter-toggle]:hover{transform:translateY(-1px) scale(1.04)}
+.shell-avatar[data-walter-toggle][aria-pressed="false"]{opacity:.56;filter:grayscale(.45) drop-shadow(0 3px 7px rgba(0,0,0,.2))}
+.shell-avatar.shell-avatar--result{width:48px;height:48px;border-radius:50%;overflow:visible;opacity:1!important;filter:drop-shadow(0 3px 8px rgba(0,0,0,.24))!important}
+.shell-avatar.shell-avatar--result img{width:100%;height:100%;object-fit:cover;object-position:center 42%}
+.walter-toggle-hint{position:absolute;z-index:40;top:48px;right:13px;width:max-content;max-width:205px;padding:7px 10px;border:1px solid rgba(235,193,101,.76);border-radius:9px;background:#fffaf0;color:#082e55;box-shadow:0 9px 24px rgba(0,20,42,.24);font:600 9px/1.3 'DM Sans',Arial,sans-serif;opacity:0;transform:translateY(-5px);pointer-events:none;transition:opacity .2s ease,transform .2s ease}
+.walter-toggle-hint::before{content:"";position:absolute;right:14px;top:-5px;width:8px;height:8px;transform:rotate(45deg);border-left:1px solid rgba(235,193,101,.76);border-top:1px solid rgba(235,193,101,.76);background:#fffaf0}
+.walter-toggle-hint.show{opacity:1;transform:none}
+
+.shell-steps{position:relative;z-index:1;display:flex;align-items:center;padding:10px clamp(16px,6vw,60px) 11px;gap:0;cursor:pointer}
+.shell-step{display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0}
+.shell-step-dot{position:relative;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:600 12px 'DM Sans',Arial,sans-serif;border:1.5px solid rgba(255,255,255,.3);background:transparent;color:rgba(255,255,255,.55);cursor:pointer;transition:.2s;padding:0}
+.shell-step--active .shell-step-dot{background:var(--shell-gold);border-color:var(--shell-gold);color:var(--shell-navy)}
+.shell-step--done .shell-step-dot{border-color:var(--shell-gold-soft);color:var(--shell-gold-soft)}
+.shell-step-dot[aria-disabled="true"]{cursor:not-allowed}
+.shell-step-dot:not(:disabled):hover{border-color:#fff;color:#fff}
+.shell-step-label{font-size:9.5px;letter-spacing:.06em;color:rgba(255,255,255,.45);white-space:nowrap}
+.shell-step--active .shell-step-label{color:#fff;font-weight:600}
+.shell-step--done .shell-step-label{color:rgba(255,255,255,.75)}
+.shell-step-line{flex:1;height:1px;background:rgba(255,255,255,.18);margin:0 6px;margin-bottom:19px;min-width:14px}
+.shell-step-line--on{background:var(--shell-gold-soft)}
+.shell-locked-tip{position:absolute;z-index:30;left:50%;top:calc(100% + 7px);width:max-content;max-width:min(88vw,330px);transform:translateX(-50%);padding:8px 12px;border:1px solid rgba(207,162,75,.5);border-radius:9px;background:rgba(5,40,71,.97);box-shadow:0 10px 26px rgba(2,22,43,.25);color:#fff7e5;text-align:center;font:500 10px/1.35 'DM Sans',Arial,sans-serif;letter-spacing:.01em}
+.shell-locked-tip[hidden]{display:none}
+@keyframes shellInsightRipple{
+  0%{box-shadow:0 0 0 0 rgba(229,190,104,.42)}
+  65%,100%{box-shadow:0 0 0 9px rgba(229,190,104,0)}
+}
+body.preview-activated .shell-step[data-step="potentiel"] .shell-step-dot,
+body.preview-activated .shell-step[data-step="pistes"] .shell-step-dot{
+  border-color:rgba(232,196,116,.78);color:#efd18c;
+  animation:shellInsightRipple 2.35s ease-out infinite;
+}
+body.preview-activated .shell-step[data-step="pistes"] .shell-step-dot{animation-delay:.7s}
+body.preview-activated .shell-step[data-step="potentiel"] .shell-step-label,
+body.preview-activated .shell-step[data-step="pistes"] .shell-step-label{color:rgba(255,255,255,.8)}
+
+.shell-tabbar{display:flex;align-items:stretch;justify-content:space-around;max-width:640px;margin:0 auto}
+.shell-tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px 12px;background:none;border:0;color:rgba(255,255,255,.5);cursor:pointer;font:500 10.5px 'DM Sans',Arial,sans-serif;position:relative;transition:color .2s}
+.shell-tab .shell-icon{transition:transform .2s}
+.shell-tab--active{color:var(--shell-gold-soft)}
+.shell-tab--active::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:28px;height:2px;background:var(--shell-gold-soft);border-radius:2px}
+.shell-tab:disabled{color:rgba(255,255,255,.22);cursor:not-allowed}
+.shell-tab:not(:disabled):hover{color:#fff}
+.shell-tab:not(:disabled):active .shell-icon{transform:scale(.9)}
+
+/* Composants partagés : badges à icône, étoile, puces de notation */
+.shell-icon-badge{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(180,134,63,.12);color:var(--shell-navy-2);flex-shrink:0}
+.shell-icon-badge.on-dark{background:rgba(255,255,255,.12);color:#fff}
+.shell-badge-star{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;background:rgba(201,164,92,.16);color:#8a611f;font:600 10.5px 'DM Sans',Arial,sans-serif;letter-spacing:.04em}
+.shell-dots{display:inline-flex;gap:4px}
+.shell-dots i{width:7px;height:7px;border-radius:50%;background:rgba(21,18,14,.12)}
+.shell-dots i.on{background:var(--shell-gold)}
+
+@media(prefers-reduced-motion:reduce){.shell-tab,.shell-tab .shell-icon,.shell-menu-btn,.shell-step-dot{transition:none}}
+
+@media(max-width:600px){
+  .shell-bar{max-height:70px;padding:10px 20px 7px;min-height:54px;opacity:1;overflow:visible}
+  .shell-avatar{width:43px;height:43px}.shell-menu-btn svg{width:30px;height:30px}
+  .shell-menu-btn{padding:4px;margin:-4px}
+  .shell-logo{height:38px;font-size:22px}
+  .shell-steps{padding:9px 22px 10px}
+  .shell-step-dot{width:27px;height:27px;font-size:11px;border-width:1.4px}
+  .shell-step-label{display:block;font-size:10px;letter-spacing:0}
+  .shell-step-line{margin:0 7px 20px;min-width:12px}
+  .shell-tab{padding:11px 4px 13px;font-size:11px;gap:4px}
+  .shell-tab .shell-icon{width:22px;height:22px}
+}

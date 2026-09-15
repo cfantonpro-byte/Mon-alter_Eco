@@ -1,0 +1,54 @@
+.layout-editor-toggle{
+  position:fixed;z-index:12000;right:10px;bottom:10px;padding:9px 13px;border:1px solid #dfb85f;border-radius:999px;
+  background:#082d55;color:#fff8e8;box-shadow:0 8px 24px rgba(3,24,47,.3);font:700 11px/1 'DM Sans',sans-serif;
+}
+.layout-editor-panel{
+  position:fixed;z-index:12001;right:10px;bottom:10px;width:min(360px,calc(100vw - 20px));max-height:min(680px,82dvh);
+  overflow:auto;padding:14px;border:1px solid rgba(225,183,86,.78);border-radius:16px;background:rgba(5,37,69,.97);
+  color:#fff8e8;box-shadow:0 22px 60px rgba(0,16,35,.45);font-family:'DM Sans',sans-serif;
+}
+.layout-editor-panel[hidden]{display:none}
+.layout-editor-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:11px}
+.layout-editor-head strong{display:block;font:600 17px/1.1 'Instrument Serif',Georgia,serif}
+.layout-editor-head small{display:block;margin-top:4px;color:#dfc78f;font-size:8px;letter-spacing:.08em;text-transform:uppercase}
+.layout-editor-close{width:29px;height:29px;border:1px solid rgba(255,255,255,.25);border-radius:50%;background:transparent;color:#fff;font-size:18px}
+.layout-editor-row{display:grid;grid-template-columns:minmax(0,1fr) 118px 34px;align-items:center;gap:8px;padding:7px 0;border-top:1px solid rgba(255,255,255,.08)}
+.layout-editor-row label{font-size:10px;line-height:1.2}
+.layout-editor-row input{width:100%;accent-color:#e2b750}
+.layout-editor-row output{color:#f1cc78;text-align:right;font-size:9px;font-variant-numeric:tabular-nums}
+.layout-editor-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
+.layout-editor-actions button{min-height:36px;border:1px solid rgba(231,192,101,.48);border-radius:8px;background:#fff9ec;color:#082d55;font:700 9px 'DM Sans',sans-serif}
+.layout-editor-actions [data-direct]{grid-column:1/-1;background:linear-gradient(135deg,#f6d277,#dca43f);color:#052746;font-size:10px}
+.layout-editor-actions button:last-child{background:transparent;color:#fff8e8}
+.layout-editor-code{width:100%;height:64px;margin-top:8px;padding:8px;border:1px solid rgba(255,255,255,.18);border-radius:8px;background:#031f3b;color:#f8dfaa;font:8px/1.35 monospace;resize:none}
+.layout-editor-help{margin:9px 1px 0;color:rgba(255,255,255,.7);font-size:8px;line-height:1.4}
+.layout-editor-subtitle{margin-top:10px;padding:8px 0 5px;border-top:1px solid rgba(230,189,98,.32);color:#f1cc78;font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.layout-direct-target{
+  position:relative!important;outline:1.5px dashed rgba(218,164,56,.95)!important;outline-offset:3px;
+  touch-action:none!important;cursor:grab!important;
+}
+.layout-direct-target::before{
+  content:'↕';position:absolute;z-index:11990;top:3px;left:3px;width:23px;height:23px;display:grid;place-items:center;
+  border:1px solid #e6bd62;border-radius:50%;background:#062b50;color:#ffe5a1;box-shadow:0 4px 12px rgba(3,24,47,.25);
+  font:700 13px/1 sans-serif;pointer-events:none;
+}
+.layout-direct-target.layout-direct-moving{outline-style:solid!important;cursor:grabbing!important;filter:drop-shadow(0 8px 10px rgba(3,24,47,.18))}
+.layout-editor-enabled.layout-direct-mode,
+.layout-editor-enabled.layout-direct-mode body{overflow:hidden!important;overscroll-behavior:none!important}
+.layout-editor-enabled.layout-direct-mode .show-form .formpage,
+.layout-editor-enabled.layout-direct-mode .show-form .fw,
+.layout-editor-enabled.layout-direct-mode .show-form .fw-inner,
+.layout-editor-enabled.layout-direct-mode .show-form .screen.active{
+  overflow:hidden!important;
+  overscroll-behavior:none!important;
+}
+.layout-editor-enabled.layout-direct-mode .show-form #s5.active,
+.layout-editor-enabled.layout-direct-mode .show-form #s6.active,
+.layout-editor-enabled.layout-direct-mode .show-form #s8.active{
+  padding-bottom:0!important;
+  overflow:hidden!important;
+}
+@media(max-width:600px){
+  .layout-editor-panel{right:7px;bottom:7px;width:calc(100vw - 14px);max-height:72dvh;padding:12px}
+  .layout-editor-row{grid-template-columns:minmax(0,1fr) 105px 30px;padding:6px 0}
+}
