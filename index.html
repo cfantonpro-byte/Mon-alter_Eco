@@ -1000,10 +1000,10 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
 /* Médias fournis le 9 septembre et derniers réglages d'espacement */
 .approved-start-button{display:block;background:transparent!important;border:0!important;padding:0!important;box-shadow:none!important;overflow:visible}
 .approved-start-button img{display:block;width:100%;height:auto;object-fit:contain;filter:drop-shadow(0 9px 16px rgba(5,32,62,.16))}
-.show-form .bubble2{min-height:62px;padding:14px 30px;border:0;background:transparent url('assets/walter-dialog-frame.png') center/100% 100% no-repeat;box-shadow:none}
+.show-form .bubble2{min-height:62px;padding:14px 30px;border:0;background:transparent;box-shadow:none}
 .show-form .b2-text{width:100%;color:#153a61;text-align:center;font-weight:600}
 .show-form .genie-row{margin-bottom:16px}
-.show-form #strat-dots{height:46px;display:grid;grid-template-columns:repeat(6,1fr);gap:3px;padding:3px;background:transparent url('assets/savings-devices.png') center/100% 100% no-repeat}
+.show-form #strat-dots{height:46px;display:grid;grid-template-columns:repeat(6,1fr);gap:3px;padding:3px;background:transparent}
 .show-form #strat-dots .strat-card{min-width:0;height:100%;padding:0;border:0;background:transparent;box-shadow:none}
 .show-form #strat-dots .strat-card-ico,.show-form #strat-dots .strat-card-lbl{display:none!important}
 .show-form #strat-dots .strat-card.lit{border-radius:10px;background:rgba(238,186,71,.13);box-shadow:inset 0 0 0 1px rgba(210,145,29,.23),0 0 10px rgba(235,175,50,.15)}
@@ -1117,7 +1117,7 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
   min-height:70px;
   padding:18px clamp(34px,5vw,54px) 15px;
   overflow:hidden;
-  background:transparent url('assets/walter-dialog-frame.png') center/100% 100% no-repeat;
+  background:transparent;
 }
 .show-form .b2-text{
   position:relative;
@@ -1416,7 +1416,6 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
 }
 .show-form #strat-dots .strat-card-ico{
   display:block!important;width:100%;height:100%;min-height:42px;
-  background-image:url('Icones_stratégie.png');background-repeat:no-repeat;background-size:600% 100%;
 }
 .show-form #strat-dots .strat-card-ico svg{display:none}
 .show-form #strat-dots .strat-card:nth-child(1) .strat-card-ico{background-position:0% center}
@@ -1924,14 +1923,14 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
 <!-- ============ NAV ============ -->
 <div class="page-home" id="page-home">
 <div class="approved-mobile-home" aria-label="Accueil Mon Alter-Eco">
-  <img src="assets/landing-mobile-approved-reference.png" alt="Découvrez le vrai potentiel de votre patrimoine">
+  <img src="assets/home-walter-piggybank-mobile-v2.png" alt="Découvrez le vrai potentiel de votre patrimoine">
   <section class="approved-mobile-hero">
     <div class="approved-mobile-nav"><span class="mini-menu"><i></i><i></i><i></i></span><a class="approved-mobile-logo-link" href="./index.html" aria-label="Retour à l'accueil"><img class="approved-mobile-logo" src="assets/logo-white-gold-transparent.png" alt="Mon Alter-€co"></a><img class="approved-mobile-guide" src="assets/walter-chat-avatar.png" alt="Walter, votre guide"></div>
     <div class="approved-mobile-copy"><div class="approved-mobile-kicker">Votre étude personnalisée</div><h1>Découvrez<br>le vrai potentiel<br>de votre <em>patrimoine</em></h1><p>Une première analyse claire de votre situation,<br>de votre potentiel et des pistes à explorer.</p><img class="approved-mobile-benefits" src="assets/ui/Icone_accueil.png" alt="2 minutes, gratuit et sans engagement"></div>
   </section>
   <section class="approved-mobile-summary" aria-label="Les avantages de votre étude">
-    <img class="approved-summary-reference" src="assets/home-benefits-v3.png" alt="Une analyse en deux minutes, gratuite, sans engagement et confidentielle">
-    <div class="approved-summary-slice approved-summary-main" aria-hidden="true"><img src="Bulle-accueil_Top.png" alt=""></div>
+    <img class="approved-summary-reference" src="assets/home-walter-piggybank-mobile-v2.png" alt="Une analyse en deux minutes, gratuite, sans engagement et confidentielle">
+    <div class="approved-summary-slice approved-summary-main" aria-hidden="true"><img src="assets/ui/Bulle-accueil_bottom.png" alt=""></div>
     <button class="approved-start-button approved-start-button-summary" type="button" onclick="startForm()" aria-label="Commencer mon analyse">
       <video class="approved-start-button-video" autoplay muted playsinline preload="auto" poster="assets/start-analysis-button.png" aria-hidden="true" onended="clearTimeout(this.restartTimer);this.restartTimer=setTimeout(()=>{this.currentTime=0;this.play().catch(function(){})},4000)">
         <source src="assets/start-analysis-button-animated.mp4" type="video/mp4">
@@ -1988,7 +1987,7 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
 <section class="hero">
   <div class="hero-left">
     <div class="genie-bubble">
-      <div class="bubble-avatar"><img src="assets/walter-avatar.png" alt="Walter"></div>
+      <div class="bubble-avatar"><img src="assets/walter-chat-avatar.png" alt="Walter"></div>
       <div class="bubble-content">
         <div class="bubble-name">Walter · Génie Financier</div>
         <div class="bubble-text">Bonjour, je suis Walter, votre guide digital. En deux minutes, découvrons une première lecture de votre potentiel d'épargne et d'investissement.</div>
@@ -2265,7 +2264,7 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
   <div class="consent-overlay" id="consent-overlay">
     <div class="consent-box">
       <div class="consent-bubble">
-        <img src="assets/walter-avatar.png" alt="Walter" class="consent-avatar">
+        <img src="assets/walter-chat-avatar.png" alt="Walter" class="consent-avatar">
         <div class="consent-msg" id="consent-msg"></div>
       </div>
       <button class="consent-btn consent-btn-yes" onclick="handleConsent('Oui, avec plaisir')">Oui, avec plaisir</button>
