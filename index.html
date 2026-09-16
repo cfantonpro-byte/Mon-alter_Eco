@@ -2641,9 +2641,12 @@ function go(n){
   document.body.classList.toggle('preview-activated',n===8);
   updateHeaderWalter(n);
   setShellMenuAvailability(n>=8);
-  // GA4 tracking par étape
+  // GA4 tracking par étape (une seule fois par étape et par visite, pour ne
+  // pas fausser le funnel quand l'utilisateur revient en arrière puis ravance)
   const stepNames = {1:'Statut',2:'Famille',3:'Objectifs',4:'Fiscalité',5:'Épargne',6:'Localisation',8:'Résultats'};
-  if(stepNames[n]){
+  if(!window.__trackedSteps) window.__trackedSteps = new Set();
+  if(stepNames[n] && !window.__trackedSteps.has(n)){
+    window.__trackedSteps.add(n);
     gtag('event', 'form_step', {event_category:'Tunnel', event_label:stepNames[n], step_number:n});
     trackEvent('form_step', stepNames[n], n);
   }
