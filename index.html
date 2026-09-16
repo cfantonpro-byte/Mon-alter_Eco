@@ -3119,6 +3119,7 @@ async function submitToAirtable(){
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
+      trackEvent('form_complete', 'Soumission');
     } catch (err) {
       console.error('Erreur envoi Airtable:', err);
     }
