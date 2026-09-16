@@ -2389,6 +2389,23 @@ const TOTAL = 7;
 // Suivi temps réel en parallèle de GA4 (qui a un délai de traitement) :
 // même Session ID pour tous les événements d'une visite, best-effort
 // (ne doit jamais bloquer/casser la navigation du visiteur).
+// Visitor ID : identifiant stocké dans le navigateur (localStorage), qui
+// survit aux rafraîchissements/relances du site, pour distinguer un même
+// appareil revenu plusieurs fois d'un nouveau visiteur.
+function getVisitorId(){
+  try{
+    let id = localStorage.getItem('alterEcoVisitorId');
+    if(!id){
+      id = (window.crypto && typeof window.crypto.randomUUID === 'function')
+        ? window.crypto.randomUUID()
+        : 'visitor-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+      localStorage.setItem('alterEcoVisitorId', id);
+    }
+    return id;
+  }catch(_error){
+    return null; // navigation privée / stockage bloqué : on continue sans
+  }
+}
 function trackEvent(nom, detail, etape){
   if(window.ALTER_ECO_TEST_MODE) return;
   try{
@@ -2400,7 +2417,7 @@ function trackEvent(nom, detail, etape){
     fetch('/.netlify/functions/track-event', {
       method:'POST', keepalive:true,
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({sessionId: window.__sessionId, evenement: nom, detail: detail||'', etape: etape})
+      body: JSON.stringify({sessionId: window.__sessionId, visitorId: getVisitorId(), evenement: nom, detail: detail||'', etape: etape})
     }).catch(()=>{});
   }catch(_error){
     // Le suivi reste toujours secondaire : il ne doit jamais bloquer le questionnaire.

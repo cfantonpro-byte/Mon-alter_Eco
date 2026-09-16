@@ -42,6 +42,7 @@ exports.handler = async (event) => {
 
   const fields = {
     "Session ID": payload.sessionId || "",
+    "Visitor ID": payload.visitorId || "",
     "Événement": payload.evenement || "",
     "Détail": payload.detail || "",
     "Étape": payload.etape
