@@ -2809,7 +2809,7 @@ function go(n){
     // au lieu de rester figée après son animation d'arrivée.
     const idleMsgs=[
       "Astuce : ajustez l'horizon (1 an / 5 ans / 10 ans) sur la carte « Potentiel de croissance » pour affiner l'estimation.",
-      '✨ Le génie garde encore quelques tours de magie pour affiner votre étude, il ne manque plus que vos coordonnées.'
+      '✨ Le génie garde encore quelques tours de magie pour affiner votre étude.'
     ];
     idleMsgs.forEach((msg,i)=>{
       walterIdleTimers.push(setTimeout(()=>{if(currentStep===8)genie(msg);},5200+i*6200));
