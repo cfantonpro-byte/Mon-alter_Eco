@@ -1896,6 +1896,7 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
 .show-form #s8>.recap-box{min-height:36px!important;padding:4px 8px!important}
 .show-form #s8 .recap-obj{gap:4px!important}
 .show-form #s8 .recap-tag{padding:3px 8px!important;font-size:9px!important}
+.recap-obj--center{justify-content:center}
 .show-form #s8 .est-grid{display:flex!important;flex-direction:column;gap:12px;margin-top:38px!important;margin-bottom:.6rem}
 .show-form #s8 .est{width:100%!important;flex:0 0 auto!important;height:auto!important;min-height:0!important;max-height:none!important;align-self:stretch!important;padding:.45rem .65rem!important;margin-bottom:0!important;box-sizing:border-box!important}
 .show-form #s8 .est-val{font-size:16px}
@@ -2908,6 +2909,8 @@ function calcRes(){
       container.appendChild(tag);
     });
   }
+  // Bulles centrées quand il y en a plusieurs ; une seule reste alignée à gauche.
+  container.classList.toggle('recap-obj--center',OBJ.size>1);
 
   // Indicateur exploratoire : il prépare la lecture de l'étude sans constituer une promesse.
   const score=AlterEcoEngine.buildStudy(getStudyProfile()).potentialScore;
