@@ -307,7 +307,18 @@
   }
 
   const drawer=document.getElementById('solution-drawer');
-  const cityPhotos=[['Saint-Étienne','Saint-Etienne'],['Rochefort','Rochefort'],['Toulouse – Quint','Quint'],['Tarbes','Tarbes']];
+  const cityPhotos=[
+    ['Albi','Albi'],
+    ['Angers – Les Ponts-de-Cé','Angers'],
+    ['Clermont-Ferrand','Clermont'],
+    ['La Rochelle – Aytré','La rochelle_Aytré'],
+    ['Mont-Saint-Aignan','Mont Saint Agnan'],
+    ['Niort','Niort'],
+    ['Rochefort','Rochefort'],
+    ['Saint-Étienne','Saint-Etienne'],
+    ['Tarbes','Tarbes'],
+    ['Toulouse – Quint','Toulouse_Quint']
+  ];
   let selectedCity=-1;
   let baseCityImage='';
   const cityPicker=document.createElement('div');
