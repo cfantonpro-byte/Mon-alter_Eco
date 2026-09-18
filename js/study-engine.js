@@ -178,7 +178,12 @@ function pickFeaturedSolution(solutions){
   // pas toujours mettre en avant la même solution par simple effet d'ordre
   // dans ALTER_ECO_SOLUTIONS.
   const topScore = solutions[0].score;
-  const topTier = solutions.filter(s => s.score === topScore);
+  let topTier = solutions.filter(s => s.score === topScore);
+  // La prévoyance (protection) répond à un besoin différent (protéger) des
+  // objectifs patrimoniaux (investir/épargner/préparer sa retraite) : elle
+  // ne doit pas leur être mise en avant à égalité de score.
+  const nonProtection = topTier.filter(s => s.id !== 'protection');
+  if(nonProtection.length) topTier = nonProtection;
   return topTier[Math.floor(Math.random() * topTier.length)];
 }
 
