@@ -1890,14 +1890,28 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
    une seule colonne (le grid 2 colonnes forçait un retour à la ligne
    massif + un étirement à hauteur égale du texte le plus long, d'où des
    cartes trop hautes et à moitié vides). */
-.show-form #s8 .est-grid{display:flex!important;flex-direction:column;gap:14px;margin-top:18px!important;margin-bottom:.6rem}
-.show-form #s8 .est{height:auto!important;min-height:0!important;max-height:none!important;align-self:start!important;padding:.45rem .65rem!important;margin-bottom:0!important;display:block!important}
+.show-form #s8.active{grid-template-rows:auto auto auto 78px auto!important;gap:4px!important;overflow-y:auto!important;overflow-x:hidden!important}
+.show-form #s8>.sh1{margin-top:3px!important}
+.show-form #s8>.sh2{margin-bottom:6px!important}
+.show-form #s8>.recap-box{min-height:36px!important;padding:5px 8px!important}
+.show-form #s8 .est-grid{display:flex!important;flex-direction:column;gap:14px;margin-top:38px!important;margin-bottom:.6rem}
+.show-form #s8 .est{width:100%!important;flex:0 0 auto!important;height:auto!important;min-height:0!important;max-height:none!important;align-self:stretch!important;padding:.45rem .65rem!important;margin-bottom:0!important;display:block!important;box-sizing:border-box!important}
 .show-form #s8 .est-val{font-size:16px}
 .show-form #s8 .est-lbl{font-size:8.5px;margin-bottom:2px}
 .show-form #s8 .est-hint{font-size:9px;margin-top:2px}
-.show-form #s8 .contact-section{margin-top:14px!important}
+.show-form #s8 .contact-section{margin-top:34px!important}
+@media(max-width:600px) and (max-height:720px){
+  .show-form #s8.active{gap:4px!important}
+  .show-form #s8>.sh1{margin-top:2px!important}
+  .show-form #s8>.sh2{margin-bottom:5px!important}
+  .show-form #s8>.recap-box{min-height:36px!important;padding:5px 8px!important}
+  .show-form #s8 .est-grid{gap:8px;margin-top:26px!important}
+  .show-form #s8 .contact-section{margin-top:10px!important}
+}
 .show-form #s8 .contact-section .contact-fields{margin-top:0!important;margin-bottom:16px!important}
 .show-form #s8 .contact-section .cta-full{margin-top:0!important}
+.show-form #s8 .contact-section{border-top:0!important}
+.show-form #s8 .inp-lbl{color:#173f68!important}
 #potential-gauge{
   position:relative;
   width:var(--gauge-size,94px);height:var(--gauge-size,94px);
