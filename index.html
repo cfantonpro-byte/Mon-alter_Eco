@@ -92,7 +92,7 @@ button{font-family:inherit}
 #preloader-reveal{opacity:0;pointer-events:none}.preloader-rubbing #preloader-fall{opacity:0}.preloader-rubbing #preloader-reveal{opacity:1}
 .preloader-label{font-family:'Playfair Display',serif;font-size:18px;color:var(--text);letter-spacing:0.02em}
 .preloader-logo{position:absolute;z-index:3;left:50%;top:6%;width:min(210px,48vw)!important;transform:translateX(-50%);transition:opacity .3s ease}.preloader-rubbing .preloader-logo{opacity:0}
-.preloader-rub{position:absolute;z-index:4;left:50%;bottom:5.5%;width:min(520px,94vw);padding:0;background:transparent;text-align:center;filter:drop-shadow(0 14px 30px rgba(2,25,48,.22));transform:translateX(-50%) translateY(18px);opacity:0;pointer-events:none;transition:opacity .35s ease,transform .35s ease}.preloader-rub.show{opacity:1;transform:translateX(-50%) translateY(0)}.preloader-rub-art{display:block;width:100%;height:auto}.preloader-rub-track{position:absolute;left:10%;right:10%;bottom:-2px;height:4px;border-radius:999px;background:rgba(255,255,255,.24);overflow:hidden}.preloader-rub-fill{display:block!important;width:0;height:100%;margin:0!important;border-radius:inherit;background:linear-gradient(90deg,#d29327,#ffe7a0);box-shadow:0 0 8px rgba(255,215,112,.75);transition:width .08s linear}.preloader-skip{position:absolute;z-index:5;right:17px;bottom:16px;border:0;background:transparent;color:#7a6a52;font:600 9px 'DM Sans',sans-serif;text-decoration:underline;cursor:pointer}
+.preloader-rub{position:absolute;z-index:4;left:50%;bottom:5.5%;width:min(520px,94vw);padding:0;margin:0;border:0;background:transparent;font:inherit;text-align:center;filter:drop-shadow(0 14px 30px rgba(2,25,48,.22));transform:translateX(-50%) translateY(18px);opacity:0;pointer-events:none;cursor:pointer;transition:opacity .35s ease,transform .35s ease}.preloader-rub.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}.preloader-rub-art{display:block;width:100%;height:auto}.preloader-rub-track{position:absolute;left:10%;right:10%;bottom:-2px;height:4px;border-radius:999px;background:rgba(255,255,255,.24);overflow:hidden}.preloader-rub-fill{display:block!important;width:0;height:100%;margin:0!important;border-radius:inherit;background:linear-gradient(90deg,#d29327,#ffe7a0);box-shadow:0 0 8px rgba(255,215,112,.75);transition:width .08s linear}.preloader-skip{position:absolute;z-index:5;right:17px;bottom:16px;border:0;background:transparent;color:#7a6a52;font:600 9px 'DM Sans',sans-serif;text-decoration:underline;cursor:pointer}
 .preloader-dots{display:none;gap:7px}
 .preloader-dots span{width:6px;height:6px;border-radius:50%;background:rgba(184,131,42,0.3);animation:pdot 1.3s ease-in-out infinite}
 .preloader-dots span:nth-child(2){animation-delay:0.18s}
@@ -1933,7 +1933,7 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
       <source src="assets/intro-alteria-reveal-v3.mp4" type="video/mp4">
     </video>
     <img class="preloader-logo" src="assets/logo.png" alt="Mon Alter-€co">
-    <div class="preloader-rub" id="preloader-rub"><img class="preloader-rub-art" src="assets/rub-piggy-prompt-v2.png" alt="Touchez la tirelire pour révéler Alteria"></div>
+    <button class="preloader-rub" id="preloader-rub" type="button" aria-label="Toucher la tirelire pour révéler Alteria"><img class="preloader-rub-art" src="assets/rub-piggy-prompt-v2.png" alt=""></button>
     <button class="preloader-skip" type="button" id="preloader-skip">Passer</button>
   </div>
 </div>
@@ -2415,6 +2415,7 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
   const cancelRub=()=>{rubPointerId=null;rubDistance=0;};
   stage.addEventListener('pointerup',cancelRub);
   stage.addEventListener('pointercancel',cancelRub);
+  rub.addEventListener('click',revealAlteria);
   skip.addEventListener('click',hidePreloader);
   setTimeout(()=>{if(!readyToReveal&&!hidden) inviteRub()},8500);
 })();
