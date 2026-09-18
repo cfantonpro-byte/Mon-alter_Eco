@@ -1894,9 +1894,9 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
 .show-form #s8>.sh1{margin-top:3px!important}
 .show-form #s8>.sh2{margin-bottom:4px!important}
 .show-form #s8>.recap-box{min-height:36px!important;padding:4px 8px!important}
-.show-form #s8 .recap-obj{gap:4px!important}
-.show-form #s8 .recap-tag{padding:3px 8px!important;font-size:9px!important}
-.recap-obj--center{justify-content:center}
+.show-form #s8 .recap-obj{display:grid!important;grid-template-columns:1fr 1fr;column-gap:10px;row-gap:5px}
+.show-form #s8 .recap-bullet{position:relative;padding-left:11px;color:#eef3fa;font:500 9.5px/1.35 'DM Sans',sans-serif}
+.show-form #s8 .recap-bullet::before{content:"";position:absolute;left:0;top:5px;width:4px;height:4px;border-radius:50%;background:#e3c179}
 .show-form #s8 .est-grid{display:flex!important;flex-direction:column;gap:12px;margin-top:38px!important;margin-bottom:.6rem}
 .show-form #s8 .est{width:100%!important;flex:0 0 auto!important;height:auto!important;min-height:0!important;max-height:none!important;align-self:stretch!important;padding:.45rem .65rem!important;margin-bottom:0!important;box-sizing:border-box!important}
 .show-form #s8 .est-val{font-size:16px}
@@ -2896,21 +2896,19 @@ function calcRes(){
     if(rfiscHintEl)rfiscHintEl.textContent='';
   }
 
-  // Récap objectifs
+  // Récap objectifs : puces sur 2 colonnes.
   const container=document.getElementById('recap-obj');
   container.innerHTML='';
   if(OBJ.size===0){
-    container.innerHTML='<span class="recap-tag">Non renseignés</span>';
+    container.innerHTML='<span class="recap-bullet">Non renseignés</span>';
   } else {
     OBJ.forEach(obj=>{
-      const tag=document.createElement('span');
-      tag.className='recap-tag';
-      tag.textContent=obj;
-      container.appendChild(tag);
+      const item=document.createElement('span');
+      item.className='recap-bullet';
+      item.textContent=obj;
+      container.appendChild(item);
     });
   }
-  // Bulles centrées quand il y en a plusieurs ; une seule reste alignée à gauche.
-  container.classList.toggle('recap-obj--center',OBJ.size>1);
 
   // Indicateur exploratoire : il prépare la lecture de l'étude sans constituer une promesse.
   const score=AlterEcoEngine.buildStudy(getStudyProfile()).potentialScore;
