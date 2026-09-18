@@ -90,8 +90,6 @@ button{font-family:inherit}
 .preloader-inner{position:relative;width:min(100vw,56.25dvh);height:100dvh;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none}
 .preloader-inner video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#f8f0e3;transition:opacity .25s ease}
 #preloader-reveal{opacity:0;pointer-events:none}.preloader-rubbing #preloader-fall{opacity:0}.preloader-rubbing #preloader-reveal{opacity:1}
-.preloader-fallback-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;pointer-events:none;transition:opacity .4s ease}
-.preloader-fallback-img.show{opacity:1}
 .preloader-label{font-family:'Playfair Display',serif;font-size:18px;color:var(--text);letter-spacing:0.02em}
 .preloader-logo{position:absolute;z-index:3;left:50%;top:6%;width:min(210px,48vw)!important;transform:translateX(-50%);transition:opacity .3s ease}.preloader-rubbing .preloader-logo{opacity:0}
 .preloader-rub{position:absolute;z-index:4;left:50%;bottom:5.5%;width:min(520px,94vw);padding:0;margin:0;border:0;background:transparent;font:inherit;text-align:center;filter:drop-shadow(0 14px 30px rgba(2,25,48,.22));transform:translateX(-50%) translateY(18px);opacity:0;pointer-events:none;cursor:pointer;transition:opacity .35s ease,transform .35s ease}.preloader-rub.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}.preloader-rub-art{display:block;width:100%;height:auto}.preloader-rub-track{position:absolute;left:10%;right:10%;bottom:-2px;height:4px;border-radius:999px;background:rgba(255,255,255,.24);overflow:hidden}.preloader-rub-fill{display:block!important;width:0;height:100%;margin:0!important;border-radius:inherit;background:linear-gradient(90deg,#d29327,#ffe7a0);box-shadow:0 0 8px rgba(255,215,112,.75);transition:width .08s linear}.preloader-skip{position:absolute;z-index:5;right:17px;bottom:16px;border:0;background:transparent;color:#7a6a52;font:600 9px 'DM Sans',sans-serif;text-decoration:underline;cursor:pointer}
@@ -1978,7 +1976,6 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
     <video id="preloader-reveal" muted playsinline preload="auto" aria-label="Alteria apparaît">
       <source src="assets/intro-alteria-reveal-v3.mp4" type="video/mp4">
     </video>
-    <img class="preloader-fallback-img" id="preloader-fallback-img" src="assets/preloader-fallback-scene.png" alt="" aria-hidden="true">
     <img class="preloader-logo" src="assets/logo.png" alt="Mon Alter-€co">
     <button class="preloader-rub" id="preloader-rub" type="button" aria-label="Toucher la tirelire pour révéler Alteria"><img class="preloader-rub-art" src="assets/rub-piggy-prompt-v2.png" alt=""></button>
     <button class="preloader-skip" type="button" id="preloader-skip">Passer</button>
@@ -2411,13 +2408,11 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
   const stage = document.getElementById('preloader-stage');
   const fall = document.getElementById('preloader-fall');
   const reveal = document.getElementById('preloader-reveal');
-  const fallbackImg = document.getElementById('preloader-fallback-img');
   const rub = document.getElementById('preloader-rub');
   const skip = document.getElementById('preloader-skip');
   let hidden = false;
   let readyToReveal = false;
   let revealStarted = false;
-  let usingFallback = false;
   let rubPointerId = null;
   let rubLastX = 0;
   let rubLastY = 0;
@@ -2439,23 +2434,6 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
       if(Number.isFinite(reveal.duration)) revealDuration = reveal.duration;
     }
   }
-  // Repli connexion lente : si une vidéo n'a pas assez chargé pour démarrer
-  // proprement après un court délai, on bascule sur une image statique
-  // (déjà utilisée en fond du site) plutôt que de laisser un cadre figé/vide.
-  // L'interaction "frottez la tirelire" reste disponible dans les deux cas.
-  function useFallbackImage(){
-    if(usingFallback || hidden) return;
-    usingFallback = true;
-    fall.style.display = 'none';
-    reveal.style.display = 'none';
-    fallbackImg.classList.add('show');
-  }
-  const fallLoadTimer = setTimeout(()=>{
-    if(!usingFallback && fall.readyState < 3){
-      useFallbackImage();
-      inviteRub();
-    }
-  }, 3000);
   function revealAlteria(e){
     if(e.target.closest?.('.preloader-skip')) return;
     if(!readyToReveal || revealStarted || hidden) return;
@@ -2464,34 +2442,21 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
     stage.classList.add('preloader-rubbing');
     rub.classList.remove('show');
     rub.hidden = true;
-    if(usingFallback){
-      // Repli connexion lente déjà déclenché sur la 1ère vidéo : on referme
-      // directement, l'image statique reste affichée entre-temps.
-      setTimeout(hidePreloader, 900);
-      return;
-    }
-    // On tente toujours de lire la vidéo, même si elle n'a pas encore
-    // atteint un readyState suffisant : play() bufferise et démarre dès que
-    // possible. Le timer ci-dessous ne bascule sur l'image que si ça reste
-    // bloqué trop longtemps (vraie connexion lente), pas juste "pas encore prêt".
-    const revealStallTimer = setTimeout(()=>{useFallbackImage();setTimeout(hidePreloader,900);}, 2500);
-    reveal.addEventListener('playing', ()=>clearTimeout(revealStallTimer), {once:true});
     reveal.playbackRate = revealPlaybackRate;
     if(reveal.readyState>=2) reveal.currentTime=0;
-    reveal.play().catch(()=>{clearTimeout(revealStallTimer);hidePreloader();});
+    reveal.play().catch(hidePreloader);
   }
   if(fall){
     fall.defaultPlaybackRate = fallPlaybackRate;
     fall.playbackRate = fallPlaybackRate;
     fall.addEventListener('loadedmetadata',()=>{fall.defaultPlaybackRate=fallPlaybackRate;fall.playbackRate=fallPlaybackRate;});
-    fall.addEventListener('playing',()=>clearTimeout(fallLoadTimer));
     fall.addEventListener('ended', inviteRub);
-    fall.addEventListener('error', ()=>{useFallbackImage();inviteRub();});
+    fall.addEventListener('error', inviteRub);
   }
   if(reveal){
     reveal.addEventListener('loadedmetadata',()=>{revealDuration=reveal.duration||6;reveal.defaultPlaybackRate=revealPlaybackRate;reveal.playbackRate=revealPlaybackRate});
     reveal.addEventListener('ended',hidePreloader);
-    reveal.addEventListener('error',()=>{useFallbackImage();hidePreloader();});
+    reveal.addEventListener('error',hidePreloader);
   }
   stage.addEventListener('pointerdown',(e)=>{
     if(!readyToReveal || revealStarted || e.target.closest?.('.preloader-skip')) return;
