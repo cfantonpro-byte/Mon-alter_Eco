@@ -1882,6 +1882,7 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
    ci-dessus (lignes ~1597-1732) qui ne géraient que l'ancien gabarit en
    images — la largeur suit --gauge-size (fixé en JS sur la hauteur réelle)
    pour rester circulaire quelle que soit la taille d'écran. */
+.potential-gauge-wrap{display:flex;flex-direction:column;align-items:center;gap:7px}
 #potential-gauge{
   position:relative;
   width:var(--gauge-size,94px);height:var(--gauge-size,94px);
@@ -1905,17 +1906,16 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
   content:"";position:absolute;left:-6px;top:-5.5px;width:13px;height:13px;border-radius:50%;
   background:#0b3562;border:2px solid #f1cb6d;
 }
-#potential-gauge .potential-gauge-score{
-  position:absolute;left:50%;top:64%;transform:translate(-50%,-50%);
-  z-index:2;text-align:center;color:#0b3562;
+.potential-gauge-wrap .potential-gauge-score{
+  text-align:center;color:#0b3562;
   font:600 17px/1 'Instrument Serif',Georgia,serif;
 }
-#potential-gauge .potential-gauge-score small{display:block;margin-top:2px;font:500 8px 'DM Sans',sans-serif;color:#6f6657}
+.potential-gauge-wrap .potential-gauge-score small{margin-left:2px;font:500 11px 'DM Sans',sans-serif;color:#6f6657}
 @keyframes gaugeRingReveal{from{opacity:0}to{opacity:1}}
 @keyframes gaugeNeedleReveal{from{transform:rotate(-135deg)}to{transform:rotate(var(--needle-angle,135deg))}}
 .potential-gauge.is-animating::before{animation:gaugeRingReveal .85s ease both}
 .potential-gauge.is-animating .potential-gauge-needle{animation:gaugeNeedleReveal 1.05s cubic-bezier(.25,.72,.18,1) both}
-.potential-gauge.is-animating .potential-gauge-score{animation:gaugeScoreIn 1.05s ease both}
+#potential-gauge.is-animating ~ .potential-gauge-score{animation:gaugeScoreIn 1.05s ease both}
 </style>
 </head>
 <body>
@@ -2266,8 +2266,10 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
           <section class="result-potential-card">
             <div class="result-mini-title">Potentiel</div>
             <button class="potential-info" type="button" aria-label="À propos de votre potentiel">i<span>Estimation indicative calculée à partir de votre profil.</span></button>
-            <div class="potential-gauge" id="potential-gauge">
-              <span class="potential-gauge-needle"></span>
+            <div class="potential-gauge-wrap">
+              <div class="potential-gauge" id="potential-gauge">
+                <span class="potential-gauge-needle"></span>
+              </div>
               <strong class="potential-gauge-score"><span id="potential-score">—</span><small>/100</small></strong>
             </div>
           </section>
