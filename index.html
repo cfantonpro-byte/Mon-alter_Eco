@@ -1892,7 +1892,7 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
    cartes trop hautes et à moitié vides). */
 .show-form #s8.active{grid-template-rows:auto auto auto 78px auto!important;gap:3px!important;overflow-y:auto!important;overflow-x:hidden!important}
 .show-form #s8>.sh1{margin-top:3px!important}
-.show-form #s8>.sh2{margin-bottom:4px!important}
+.show-form #s8>.sh2{margin:0!important;padding:0!important;min-height:0!important;display:block!important}
 .show-form #s8>.recap-box{min-height:36px!important;padding:4px 8px!important}
 .show-form #s8 .recap-obj{display:grid!important;grid-template-columns:1fr 1fr;column-gap:10px;row-gap:5px}
 .show-form #s8 .recap-bullet{position:relative;padding-left:11px;color:#eef3fa;font:500 9.5px/1.35 'DM Sans',sans-serif}
@@ -1906,7 +1906,7 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
 @media(max-width:600px) and (max-height:720px){
   .show-form #s8.active{gap:4px!important}
   .show-form #s8>.sh1{margin-top:2px!important}
-  .show-form #s8>.sh2{margin-bottom:5px!important}
+  .show-form #s8>.sh2{margin:0!important;padding:0!important;min-height:0!important}
   .show-form #s8>.recap-box{min-height:36px!important;padding:5px 8px!important}
   .show-form #s8 .est-grid{gap:8px;margin-top:26px!important}
   .show-form #s8 .contact-section{margin-top:10px!important}
@@ -2298,7 +2298,7 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
       <div class="screen" id="s8">
         <span class="stag">Votre analyse est prête</span>
         <div class="sh1">Un potentiel bien réel à exploiter</div>
-        <div class="sh2">Voici ce que votre profil révèle. Renseignez vos coordonnées pour recevoir votre étude personnalisée.</div>
+        <div class="sh2"></div>
 
         <div class="recap-box">
           <div class="recap-lbl">Objectifs</div>
@@ -2772,7 +2772,10 @@ function updatePrimaryWish(){
   if(label)label.textContent='1er souhait : '+wording;
 }
 
+let walterIdleTimers=[];
+function clearWalterIdleTimers(){walterIdleTimers.forEach(clearTimeout);walterIdleTimers=[];}
 function go(n){
+  clearWalterIdleTimers();
   currentStep=n;
   document.body.classList.toggle('preview-activated',n===8);
   updateHeaderWalter(n);
@@ -2801,6 +2804,16 @@ function go(n){
   if(DEFAULT_MSGS[n]) genie(DEFAULT_MSGS[n]);
   if(n===8){
     genie('Votre analyse est prête. Renseignez vos coordonnées pour recevoir le rapport complet.');
+    // Personne ne clique sur cette page (pas d'options, pas de "suivant") avant
+    // de remplir le formulaire : la bulle continue de vivre pendant la lecture
+    // au lieu de rester figée après son animation d'arrivée.
+    const idleMsgs=[
+      "Astuce : ajustez l'horizon (1 an / 5 ans / 10 ans) sur la carte « Potentiel de croissance » pour affiner l'estimation.",
+      '🔒 Vos coordonnées restent strictement confidentielles, elles ne servent qu\'à vous transmettre votre étude.'
+    ];
+    idleMsgs.forEach((msg,i)=>{
+      walterIdleTimers.push(setTimeout(()=>{if(currentStep===8)genie(msg);},5200+i*6200));
+    });
     requestAnimationFrame(()=>{
       const gauge=document.getElementById('potential-gauge');
       if(!gauge)return;
