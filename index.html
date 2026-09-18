@@ -1895,7 +1895,7 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
 .show-form #s8>.sh2{margin-bottom:6px!important}
 .show-form #s8>.recap-box{min-height:36px!important;padding:5px 8px!important}
 .show-form #s8 .est-grid{display:flex!important;flex-direction:column;gap:14px;margin-top:38px!important;margin-bottom:.6rem}
-.show-form #s8 .est{width:100%!important;flex:0 0 auto!important;height:auto!important;min-height:0!important;max-height:none!important;align-self:stretch!important;padding:.45rem .65rem!important;margin-bottom:0!important;display:block!important;box-sizing:border-box!important}
+.show-form #s8 .est{width:100%!important;flex:0 0 auto!important;height:auto!important;min-height:0!important;max-height:none!important;align-self:stretch!important;padding:.45rem .65rem!important;margin-bottom:0!important;box-sizing:border-box!important}
 .show-form #s8 .est-val{font-size:16px}
 .show-form #s8 .est-lbl{font-size:8.5px;margin-bottom:2px}
 .show-form #s8 .est-hint{font-size:9px;margin-top:2px}
@@ -2317,10 +2317,10 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
             <div class="est-val soft-val" id="r10">—</div>
             <div class="est-hint">sur 10 ans, scénario prudent</div>
           </div>
-          <div class="est soft-est">
+          <div class="est soft-est" id="rfisc-card">
             <div class="est-lbl">Économie fiscale estimée</div>
             <div class="est-val soft-val" id="rfisc">—</div>
-            <div class="est-hint">selon votre revenu, vos plafonds et les dispositifs étudiés</div>
+            <div class="est-hint">par an, selon votre tranche d'imposition et votre effort d'épargne</div>
           </div>
         </div>
 
@@ -2839,9 +2839,20 @@ function calcRes(){
   const hi=Math.round(total*1.3/1000)*1000;
   document.getElementById('r10').textContent = lo>0 ? fmt(lo)+' — '+fmt(hi)+' €' : 'Potentiel à préciser dans votre étude';
 
-  document.getElementById('rfisc').textContent = parseInt(D.impot||0) >= 5000
-    ? 'Potentiel à approfondir'
-    : 'À qualifier selon votre situation';
+  // Économie fiscale : effort d'épargne annuel (mensuel×12, support défiscalisant
+  // type PER) × taux marginal d'imposition estimé depuis la tranche d'impôt
+  // renseignée. N'est montrée que si l'objectif "Réduire mon imposition" est
+  // sélectionné — sinon elle n'a pas de sens pour le profil.
+  const rfiscCard=document.getElementById('rfisc-card');
+  const tmiByImpot={500:0.11,3750:0.30,6250:0.30,10000:0.41};
+  const tmi=tmiByImpot[Number(D.impot)]||0;
+  const economieFiscale=Math.round(m*12*tmi);
+  if(OBJ.has('Réduire mon imposition') && economieFiscale>0){
+    if(rfiscCard)rfiscCard.style.display='';
+    document.getElementById('rfisc').textContent=fmt(economieFiscale)+' €/an';
+  } else if(rfiscCard){
+    rfiscCard.style.display='none';
+  }
 
   // Récap objectifs
   const container=document.getElementById('recap-obj');
