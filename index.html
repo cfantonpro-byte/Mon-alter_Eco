@@ -1875,6 +1875,47 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
   .page-home .hero-right>.sparkle,
   .page-home .hero-right>.genie-img-wrap{display:none}
 }
+
+/* Jauge de potentiel de l'étape "Un potentiel bien réel à exploiter" :
+   même anneau + aiguille (dégradé conique masqué) que la page Potentiel du
+   simulateur, au lieu des anciennes images. Remplace ~10 blocs dispersés
+   ci-dessus (lignes ~1597-1732) qui ne géraient que l'ancien gabarit en
+   images — la largeur suit --gauge-size (fixé en JS sur la hauteur réelle)
+   pour rester circulaire quelle que soit la taille d'écran. */
+#potential-gauge{
+  position:relative;
+  width:var(--gauge-size,94px);height:var(--gauge-size,94px);
+  max-width:100%;margin:0 auto;overflow:visible;
+}
+#potential-gauge::before{
+  content:"";position:absolute;inset:0;border-radius:50%;
+  background:conic-gradient(from 225deg,#d7a842 0deg,#efc96c calc(var(--score,0) * 2.7deg),#dfe3e5 0deg 270deg,transparent 270deg);
+  -webkit-mask:radial-gradient(circle,transparent 0 36%,#000 37% 50%,transparent 51%);
+  mask:radial-gradient(circle,transparent 0 36%,#000 37% 50%,transparent 51%);
+}
+#potential-gauge .potential-gauge-needle{
+  position:absolute;left:50%;top:50%;width:38%;height:3px;border-radius:3px;
+  background:linear-gradient(90deg,#0b3562 0 83%,#d7a842 83%);
+  box-shadow:0 2px 5px rgba(4,31,57,.24);
+  transform-origin:0 50%;
+  transform:rotate(var(--needle-angle,135deg));
+  transition:transform 1.15s cubic-bezier(.2,.75,.2,1);
+}
+#potential-gauge .potential-gauge-needle::before{
+  content:"";position:absolute;left:-6px;top:-5.5px;width:13px;height:13px;border-radius:50%;
+  background:#0b3562;border:2px solid #f1cb6d;
+}
+#potential-gauge .potential-gauge-score{
+  position:absolute;left:50%;top:64%;transform:translate(-50%,-50%);
+  z-index:2;text-align:center;color:#0b3562;
+  font:600 17px/1 'Instrument Serif',Georgia,serif;
+}
+#potential-gauge .potential-gauge-score small{display:block;margin-top:2px;font:500 8px 'DM Sans',sans-serif;color:#6f6657}
+@keyframes gaugeRingReveal{from{opacity:0}to{opacity:1}}
+@keyframes gaugeNeedleReveal{from{transform:rotate(-135deg)}to{transform:rotate(var(--needle-angle,135deg))}}
+.potential-gauge.is-animating::before{animation:gaugeRingReveal .85s ease both}
+.potential-gauge.is-animating .potential-gauge-needle{animation:gaugeNeedleReveal 1.05s cubic-bezier(.25,.72,.18,1) both}
+.potential-gauge.is-animating .potential-gauge-score{animation:gaugeScoreIn 1.05s ease both}
 </style>
 </head>
 <body>
@@ -2226,8 +2267,7 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
             <div class="result-mini-title">Potentiel</div>
             <button class="potential-info" type="button" aria-label="À propos de votre potentiel">i<span>Estimation indicative calculée à partir de votre profil.</span></button>
             <div class="potential-gauge" id="potential-gauge">
-              <img class="potential-gauge-base" src="assets/potential-gauge-base-v1.png" alt="">
-              <img class="potential-gauge-needle" src="assets/potential-gauge-needle-v2.png" alt="">
+              <span class="potential-gauge-needle"></span>
               <strong class="potential-gauge-score"><span id="potential-score">—</span><small>/100</small></strong>
             </div>
           </section>
@@ -2685,6 +2725,10 @@ function go(n){
     requestAnimationFrame(()=>{
       const gauge=document.getElementById('potential-gauge');
       if(!gauge)return;
+      // Mesuré ici (étape désormais visible) et pas dans calcRes() : la
+      // hauteur réelle n'est connue qu'une fois #s8 affiché.
+      const size=gauge.getBoundingClientRect().height||94;
+      gauge.style.setProperty('--gauge-size',size+'px');
       gauge.classList.remove('is-animating');
       void gauge.offsetWidth;
       gauge.classList.add('is-animating');
@@ -2764,9 +2808,10 @@ function calcRes(){
   const gaugeEl=document.getElementById('potential-gauge');
   if(scoreEl)scoreEl.textContent=score;
   if(gaugeEl){
-    const targetAngle=(-180+score*1.8)+'deg';
-    gaugeEl.style.setProperty('--gauge-angle',targetAngle);
-    gaugeEl.style.setProperty('--gauge-target',targetAngle);
+    // Même jauge (anneau + aiguille) que la page "Potentiel" du simulateur.
+    const clamped=Math.max(0,Math.min(100,score));
+    gaugeEl.style.setProperty('--score',clamped);
+    gaugeEl.style.setProperty('--needle-angle',(135+clamped*2.7)+'deg');
     gaugeEl.setAttribute('aria-label','Potentiel estimé : '+score+' sur 100');
   }
 
