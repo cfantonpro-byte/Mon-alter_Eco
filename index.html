@@ -1883,11 +1883,19 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
    images — la largeur suit --gauge-size (fixé en JS sur la hauteur réelle)
    pour rester circulaire quelle que soit la taille d'écran. */
 .potential-gauge-wrap{display:flex;flex-direction:column;align-items:center;gap:0}
-.potential-gauge-wrap .potential-gauge-score{margin-top:-7px}
+.potential-gauge-wrap .potential-gauge-score{margin-top:-13px}
 /* Réaffiche "Potentiel de croissance" / "Économie fiscale estimée" sur mobile
    (masqués en display:none!important par deux anciennes règles ci-dessus,
-   lignes ~598 et ~943). */
-.show-form #s8 .est-grid{display:grid!important}
+   lignes ~598 et ~943), avec un gabarit compact adapté à l'écran étroit :
+   une seule colonne (le grid 2 colonnes forçait un retour à la ligne
+   massif + un étirement à hauteur égale du texte le plus long, d'où des
+   cartes trop hautes et à moitié vides). */
+.show-form #s8 .est-grid{display:grid!important;grid-template-columns:1fr;align-items:start!important;align-content:start!important;gap:6px;margin-bottom:.6rem}
+.show-form #s8 .est{height:auto!important;min-height:0!important;max-height:none!important;align-self:start!important;padding:.45rem .65rem!important;margin-bottom:0!important;display:block!important}
+.show-form #s8 .est-val{font-size:16px}
+.show-form #s8 .est-lbl{font-size:8.5px;margin-bottom:2px}
+.show-form #s8 .est-hint{font-size:9px;margin-top:2px}
+.show-form #s8 .contact-section{margin-top:14px!important}
 #potential-gauge{
   position:relative;
   width:var(--gauge-size,94px);height:var(--gauge-size,94px);
