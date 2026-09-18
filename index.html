@@ -1912,6 +1912,12 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
 .show-form #s8 .contact-section .cta-full{margin-top:0!important}
 .show-form #s8 .contact-section{border-top:0!important}
 .show-form #s8 .inp-lbl{color:#173f68!important}
+.show-form #s8 .est{position:relative}
+.show-form #s8 .est-lbl{display:flex;align-items:center;gap:4px}
+.est-info{position:relative;flex-shrink:0;width:13px;height:13px;padding:0;border:1px solid rgba(192,139,38,.62);border-radius:50%;background:#fffaf0;color:#9b6c18;font:700 8px/1 'DM Sans',sans-serif;cursor:help;line-height:11px}
+.est-info span{position:absolute;z-index:60;left:0;bottom:calc(100% + 7px);width:150px;max-width:60vw;padding:6px 8px;border:1px solid rgba(224,174,73,.72);border-radius:7px;background:#072b50;color:#fff8e8;box-shadow:0 8px 20px rgba(3,25,48,.24);font:500 8px/1.35 'DM Sans',sans-serif;text-align:left;text-transform:none;letter-spacing:normal;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(4px);transition:.18s ease}
+.est-info:hover span,.est-info:focus span,.est-info.tip-open span{opacity:1;visibility:visible;transform:none}
+.est-val--muted{font-family:'DM Sans',sans-serif!important;font-size:12.5px!important;font-weight:600!important;color:#7a6f5f!important;line-height:1.3!important}
 #potential-gauge{
   position:relative;
   width:var(--gauge-size,94px);height:var(--gauge-size,94px);
@@ -2313,12 +2319,12 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
 
         <div class="est-grid">
           <div class="est soft-est">
-            <div class="est-lbl">Potentiel de croissance</div>
+            <div class="est-lbl">Potentiel de croissance<button class="est-info" type="button" aria-label="Plus d'informations">i<span>Estimation indicative, le détail est dans votre étude personnalisée</span></button></div>
             <div class="est-val soft-val" id="r10">—</div>
             <div class="est-hint">sur 10 ans, scénario prudent</div>
           </div>
           <div class="est soft-est" id="rfisc-card">
-            <div class="est-lbl">Économie fiscale estimée</div>
+            <div class="est-lbl">Économie fiscale estimée<button class="est-info" type="button" aria-label="Plus d'informations">i<span>Estimation indicative, le détail est dans votre étude personnalisée</span></button></div>
             <div class="est-val soft-val" id="rfisc">—</div>
             <div class="est-hint">par an, selon votre tranche d'imposition et votre effort d'épargne</div>
           </div>
@@ -2655,7 +2661,15 @@ function toggleStrategyTip(event,card){
   document.querySelectorAll('#strat-dots .strat-card.tip-open').forEach(el=>el.classList.remove('tip-open'));
   if(willOpen)card.classList.add('tip-open');
 }
-document.addEventListener('click',()=>document.querySelectorAll('#strat-dots .strat-card.tip-open,.result-path-icon.tip-open').forEach(el=>el.classList.remove('tip-open')));
+document.addEventListener('click',()=>document.querySelectorAll('#strat-dots .strat-card.tip-open,.result-path-icon.tip-open,.est-info.tip-open').forEach(el=>el.classList.remove('tip-open')));
+document.addEventListener('click',event=>{
+  const info=event.target.closest('.est-info');
+  if(!info)return;
+  event.stopPropagation();
+  const willOpen=!info.classList.contains('tip-open');
+  document.querySelectorAll('.est-info.tip-open').forEach(el=>el.classList.remove('tip-open'));
+  if(willOpen)info.classList.add('tip-open');
+});
 function showLive(){
   const m = mIdx>=0?mIdx:0, t = tIdx>=0?tIdx:0;
   // Le nombre de stratégies progresse avec le niveau le plus engageant des deux curseurs,
@@ -2844,14 +2858,19 @@ function calcRes(){
   // renseignée. N'est montrée que si l'objectif "Réduire mon imposition" est
   // sélectionné — sinon elle n'a pas de sens pour le profil.
   const rfiscCard=document.getElementById('rfisc-card');
+  const rfiscHintEl=rfiscCard?.querySelector('.est-hint');
+  const rfiscValEl=document.getElementById('rfisc');
   const tmiByImpot={500:0.11,3750:0.30,6250:0.30,10000:0.41};
   const tmi=tmiByImpot[Number(D.impot)]||0;
   const economieFiscale=Math.round(m*12*tmi);
   if(OBJ.has('Réduire mon imposition') && economieFiscale>0){
-    if(rfiscCard)rfiscCard.style.display='';
-    document.getElementById('rfisc').textContent=fmt(economieFiscale)+' €/an';
-  } else if(rfiscCard){
-    rfiscCard.style.display='none';
+    rfiscValEl.textContent=fmt(economieFiscale)+' €/an';
+    rfiscValEl.classList.remove('est-val--muted');
+    if(rfiscHintEl)rfiscHintEl.textContent="par an, selon votre tranche d'imposition et votre effort d'épargne";
+  } else {
+    rfiscValEl.textContent='Non concerné par vos objectifs actuels';
+    rfiscValEl.classList.add('est-val--muted');
+    if(rfiscHintEl)rfiscHintEl.textContent='';
   }
 
   // Récap objectifs
