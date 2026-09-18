@@ -43,7 +43,7 @@ const ALTER_ECO_SOLUTIONS = [
     vigilance: 'Un investissement immobilier est peu liquide et comporte des risques locatifs, financiers et de perte en capital.'
   },
   {
-    id: 'studyz', enabled: false, name: 'Investir dans un logement étudiant', type: 'Immobilier meublé avec services',
+    id: 'studyz', name: 'Investir dans un logement étudiant', type: 'Immobilier meublé avec services',
     goals: ["Investir dans l'immobilier", 'Valoriser mon épargne', 'Préparer ma retraite'],
     positives: () => 3,
     exclude: p => !isNouvelleAquitaine(p) || p.epargne < 10000 || p.mensuel < 200,
