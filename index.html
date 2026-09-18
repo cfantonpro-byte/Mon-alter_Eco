@@ -1882,7 +1882,7 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
    ci-dessus (lignes ~1597-1732) qui ne géraient que l'ancien gabarit en
    images — la largeur suit --gauge-size (fixé en JS sur la hauteur réelle)
    pour rester circulaire quelle que soit la taille d'écran. */
-.potential-gauge-wrap{display:flex;flex-direction:column;align-items:center;gap:7px}
+.potential-gauge-wrap{display:flex;flex-direction:column;align-items:center;gap:14px}
 #potential-gauge{
   position:relative;
   width:var(--gauge-size,94px);height:var(--gauge-size,94px);
@@ -1907,15 +1907,17 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
   background:#0b3562;border:2px solid #f1cb6d;
 }
 .potential-gauge-wrap .potential-gauge-score{
+  position:static;z-index:auto;transform:none;text-shadow:none;
   text-align:center;color:#0b3562;
   font:600 17px/1 'Instrument Serif',Georgia,serif;
 }
 .potential-gauge-wrap .potential-gauge-score small{margin-left:2px;font:500 11px 'DM Sans',sans-serif;color:#6f6657}
 @keyframes gaugeRingReveal{from{opacity:0}to{opacity:1}}
 @keyframes gaugeNeedleReveal{from{transform:rotate(-135deg)}to{transform:rotate(var(--needle-angle,135deg))}}
+@keyframes gaugeScoreReveal{0%,55%{opacity:0}to{opacity:1}}
 .potential-gauge.is-animating::before{animation:gaugeRingReveal .85s ease both}
 .potential-gauge.is-animating .potential-gauge-needle{animation:gaugeNeedleReveal 1.05s cubic-bezier(.25,.72,.18,1) both}
-#potential-gauge.is-animating ~ .potential-gauge-score{animation:gaugeScoreIn 1.05s ease both}
+#potential-gauge.is-animating ~ .potential-gauge-score{animation:gaugeScoreReveal 1.05s ease both}
 </style>
 </head>
 <body>
