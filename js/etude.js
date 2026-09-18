@@ -19,7 +19,8 @@
     immobilier:'assets/Immobilier locatif.png',
     scpi:'assets/SCPI.png',
     protection:'assets/Prévoyance.png',
-    per:'assets/per-illustration.webp'
+    per:'assets/per-illustration.webp',
+    pea:'assets/Plan_epargne_ actions.png'
   };
   const featuredImage=solution=>FEATURED_IMAGE[solution.id]||solution.image||solution.illustration;
   const PREMIUM_ICON={
@@ -200,7 +201,7 @@
         <p class="hero-piste-lead">${isPartner?'Un investissement immobilier concret et durable, au cœur des villes étudiantes.':esc(f.benefit)}</p>
         <button type="button" class="cta-gold solution-open" data-solution="${esc(f.id)}">Voir le détail de cette piste ${AppShell.icon('chevron',16)}</button>
       </div>
-      <div class="hero-piste-media"><img src="${esc(featuredImage(f)||'assets/scroll-building-end.png')}" alt="" loading="lazy">${isPartner?`<span>${premiumBadge('location','Présence en France')} Plusieurs villes en France</span>`:''}</div>
+      <div class="hero-piste-media"><img src="${esc(featuredImage(f)||'assets/study-hero-pistes-v2.png')}" alt="" loading="lazy">${isPartner?`<span>${premiumBadge('location','Présence en France')} Plusieurs villes en France</span>`:''}</div>
     </div>`;
   }
 
