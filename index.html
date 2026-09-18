@@ -2464,12 +2464,16 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
     stage.classList.add('preloader-rubbing');
     rub.classList.remove('show');
     rub.hidden = true;
-    if(usingFallback || reveal.readyState < 2){
-      // Vidéo de révélation pas prête (même repli connexion lente) : on
-      // referme directement, l'image statique reste affichée entre-temps.
+    if(usingFallback){
+      // Repli connexion lente déjà déclenché sur la 1ère vidéo : on referme
+      // directement, l'image statique reste affichée entre-temps.
       setTimeout(hidePreloader, 900);
       return;
     }
+    // On tente toujours de lire la vidéo, même si elle n'a pas encore
+    // atteint un readyState suffisant : play() bufferise et démarre dès que
+    // possible. Le timer ci-dessous ne bascule sur l'image que si ça reste
+    // bloqué trop longtemps (vraie connexion lente), pas juste "pas encore prêt".
     const revealStallTimer = setTimeout(()=>{useFallbackImage();setTimeout(hidePreloader,900);}, 2500);
     reveal.addEventListener('playing', ()=>clearTimeout(revealStallTimer), {once:true});
     reveal.playbackRate = revealPlaybackRate;
