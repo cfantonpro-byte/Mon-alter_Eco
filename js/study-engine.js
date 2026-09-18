@@ -171,8 +171,15 @@ function computeInvestorProfile(profile){
 }
 
 function pickFeaturedSolution(solutions){
+  if(!solutions.length) return null;
   const partnerSolution = solutions.find(s => s.partner && s.score >= (s.minScore || 0));
-  return partnerSolution || solutions[0] || null;
+  if(partnerSolution) return partnerSolution;
+  // Tirage au sort parmi les solutions à égalité du meilleur score, pour ne
+  // pas toujours mettre en avant la même solution par simple effet d'ordre
+  // dans ALTER_ECO_SOLUTIONS.
+  const topScore = solutions[0].score;
+  const topTier = solutions.filter(s => s.score === topScore);
+  return topTier[Math.floor(Math.random() * topTier.length)];
 }
 
 function buildStudy(profile){
