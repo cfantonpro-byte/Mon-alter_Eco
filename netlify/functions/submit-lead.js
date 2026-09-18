@@ -99,6 +99,37 @@ exports.handler = async (event) => {
     }
   });
 
+  // Empêche une même personne (même numéro de téléphone) de soumettre
+  // plusieurs études : on vérifie qu'aucun lead existant n'a déjà ce numéro.
+  if (telephone) {
+    try {
+      const filterFormula = encodeURIComponent(`{N° telephone (fx)}=${telephone}`);
+      const dupCheck = await fetch(
+        `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(table)}?filterByFormula=${filterFormula}&maxRecords=1`,
+        {
+          headers: {
+            "Authorization": `Bearer ${apiKey}`
+          }
+        }
+      );
+      const dupData = await dupCheck.json();
+
+      if (dupCheck.ok && Array.isArray(dupData.records) && dupData.records.length > 0) {
+        return {
+          statusCode: 409,
+          body: JSON.stringify({
+            error: "Une étude a déjà été réalisée avec ce numéro de téléphone.",
+            duplicate: true
+          })
+        };
+      }
+    } catch (err) {
+      // La vérification de doublon reste secondaire : une panne réseau ici
+      // ne doit pas empêcher un vrai lead d'être enregistré.
+      console.error("Erreur vérification doublon:", err);
+    }
+  }
+
   // Envoi des données vers Airtable
   try {
     const response = await fetch(

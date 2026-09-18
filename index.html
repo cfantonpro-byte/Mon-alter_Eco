@@ -2356,6 +2356,16 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
 
 </section>
 
+<!-- POPUP ÉTUDE DÉJÀ RÉALISÉE (hors formpage : doit pouvoir s'afficher
+     depuis l'accueil, avant que le formulaire ne soit actif) -->
+<div class="otp-overlay" id="already-submitted-overlay">
+  <div class="otp-box">
+    <div class="otp-title">Étude déjà réalisée</div>
+    <div class="otp-sub">Vous avez déjà réalisé votre étude personnalisée. Un conseiller a été notifié et reviendra vers vous prochainement.</div>
+    <button class="cta cta-full" onclick="document.getElementById('already-submitted-overlay').classList.remove('active')">Fermer</button>
+  </div>
+</div>
+
 <script src="js/app-shell.js?v=091118"></script>
 <script src="js/study-engine.js?v=091515g"></script>
 <script>
@@ -2483,7 +2493,18 @@ function trackEvent(nom, detail, etape){
 }
 trackEvent('page_view', 'Accueil');
 
+function hasCompletedStudy(){
+  if(window.ALTER_ECO_TEST_MODE) return false;
+  try{ return localStorage.getItem('alterEcoStudyCompleted')==='1'; }catch(e){ return false; }
+}
+function markStudyCompleted(){
+  try{ localStorage.setItem('alterEcoStudyCompleted','1'); }catch(e){}
+}
 function startForm(){
+  if(hasCompletedStudy()){
+    document.getElementById('already-submitted-overlay').classList.add('active');
+    return;
+  }
   document.getElementById('page-home').style.display='none';
   document.body.classList.add('show-form');
   document.getElementById('formpage').classList.add('active');
@@ -3177,11 +3198,25 @@ async function submitToAirtable(){
 
   if(!window.ALTER_ECO_TEST_MODE){
     try {
-      await fetch('/.netlify/functions/submit-lead', {
+      const response = await fetch('/.netlify/functions/submit-lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
+
+      if(response.status === 409){
+        const data = await response.json().catch(()=>({}));
+        if(data.duplicate){
+          markStudyCompleted();
+          btn.disabled = false;
+          btn.textContent = originalText;
+          closeOtpPopup();
+          document.getElementById('already-submitted-overlay').classList.add('active');
+          return;
+        }
+      }
+
+      markStudyCompleted();
       trackEvent('form_complete', 'Soumission');
     } catch (err) {
       console.error('Erreur envoi Airtable:', err);
