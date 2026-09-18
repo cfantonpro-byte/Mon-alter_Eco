@@ -1892,7 +1892,8 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
    une seule colonne (le grid 2 colonnes forçait un retour à la ligne
    massif + un étirement à hauteur égale du texte le plus long, d'où des
    cartes trop hautes et à moitié vides). */
-.show-form #s8.active{grid-template-rows:auto auto auto 78px auto!important;gap:3px!important;overflow-y:auto!important;overflow-x:hidden!important}
+.show-form #s8.active{grid-template-rows:auto auto auto 78px auto!important;gap:2px!important;overflow-y:auto!important;overflow-x:hidden!important}
+.show-form:has(#s8.active) .bubble2 .b2-text{font-size:9.5px!important;line-height:1.32!important}
 .show-form #s8>.sh1{margin-top:3px!important}
 .show-form #s8>.sh2{margin:0!important;padding:0!important;min-height:0!important;display:block!important}
 .show-form #s8>.recap-box{min-height:36px!important;padding:4px 8px!important}
@@ -2839,7 +2840,7 @@ function go(n){
     // de remplir le formulaire : la bulle continue de vivre pendant la lecture
     // au lieu de rester figée après son animation d'arrivée.
     const idleMsgs=[
-      "Astuce : ajustez l'horizon (1 an / 5 ans / 10 ans) sur la carte « Potentiel de croissance » pour affiner l'estimation.",
+      "Astuce : ajustez l'horizon (1/5/10 ans) pour affiner votre potentiel.",
       '✨ Le génie garde encore quelques tours de magie pour affiner votre étude...'
     ];
     idleMsgs.forEach((msg,i)=>{
