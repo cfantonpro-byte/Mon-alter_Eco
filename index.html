@@ -435,6 +435,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .email-confirm{font-size:12px;color:var(--blue);text-align:center;min-height:16px;font-weight:500}
 
 .loader{text-align:center;padding:2.75rem 0}
+.analysis-skip{display:inline-block;width:auto;margin-top:18px;padding:11px 22px;flex:none}
 .spin{width:42px;height:42px;border:2px solid rgba(41,82,184,0.12);border-top-color:var(--blue);border-radius:50%;animation:sp 0.9s linear infinite;margin:0 auto 1.3rem}
 @keyframes sp{to{transform:rotate(360deg)}}
 .loader-thinking-video{
@@ -2290,6 +2291,7 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
           <div class="load-item" id="li1"><span class="ld"></span><span class="load-item-text">2ème souhait : révéler votre potentiel patrimonial</span></div>
           <div class="load-item" id="li2"><span class="ld"></span><span class="load-item-text">3ème souhait : identifier les meilleures stratégies</span></div>
           <div class="load-item" id="li3"><span class="ld"></span><span class="load-item-text">Votre étude personnalisée est sur le point d’être exaucée</span></div>
+          <button class="cta analysis-skip" type="button" onclick="skipAnalysis()">Voir mon résultat →</button>
         </div>
       </div>
 
@@ -2773,6 +2775,14 @@ function updatePrimaryWish(){
 
 let walterIdleTimers=[];
 function clearWalterIdleTimers(){walterIdleTimers.forEach(clearTimeout);walterIdleTimers=[];}
+let analysisSkipTimer=null;
+function skipAnalysis(){
+  if(!analysisSkipTimer)return;
+  clearTimeout(analysisSkipTimer);
+  analysisSkipTimer=null;
+  calcRes();
+  go(8);
+}
 function go(n){
   clearWalterIdleTimers();
   currentStep=n;
@@ -2794,9 +2804,9 @@ function go(n){
     updatePrimaryWish();
     const analysisVideo=document.getElementById('loader-thinking-video');
     [0,1,2,3].forEach(i=>document.getElementById('li'+i).classList.remove('lit'));
-    if(analysisVideo){analysisVideo.currentTime=0;analysisVideo.playbackRate=1;analysisVideo.play().catch(()=>{});}
-    [900,2700,4500,6300].forEach((delay,i)=>setTimeout(()=>document.getElementById('li'+i).classList.add('lit'),delay));
-    setTimeout(()=>{calcRes();go(8);},8800);
+    if(analysisVideo){analysisVideo.currentTime=0;analysisVideo.playbackRate=1.5;analysisVideo.play().catch(()=>{});}
+    [550,1650,2700,3800].forEach((delay,i)=>setTimeout(()=>document.getElementById('li'+i).classList.add('lit'),delay));
+    analysisSkipTimer=setTimeout(()=>{analysisSkipTimer=null;calcRes();go(8);},5300);
     return;
   }
   show(n);prog(n);
