@@ -92,7 +92,7 @@ button{font-family:inherit}
 #preloader-reveal{opacity:0;pointer-events:none}.preloader-rubbing #preloader-fall{opacity:0}.preloader-rubbing #preloader-reveal{opacity:1}
 .preloader-label{font-family:'Playfair Display',serif;font-size:18px;color:var(--text);letter-spacing:0.02em}
 .preloader-logo{position:absolute;z-index:3;left:50%;top:6%;width:min(210px,48vw)!important;transform:translateX(-50%);transition:opacity .3s ease}.preloader-rubbing .preloader-logo{opacity:0}
-.preloader-rub{position:absolute;z-index:4;left:50%;bottom:5.5%;width:min(520px,94vw);padding:0;margin:0;border:0;background:transparent;font:inherit;text-align:center;filter:drop-shadow(0 14px 30px rgba(2,25,48,.22));transform:translateX(-50%) translateY(18px);opacity:0;pointer-events:none;cursor:pointer;transition:opacity .35s ease,transform .35s ease}.preloader-rub.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}.preloader-rub-art{display:block;width:100%;height:auto}.preloader-rub-track{position:absolute;left:10%;right:10%;bottom:-2px;height:4px;border-radius:999px;background:rgba(255,255,255,.24);overflow:hidden}.preloader-rub-fill{display:block!important;width:0;height:100%;margin:0!important;border-radius:inherit;background:linear-gradient(90deg,#d29327,#ffe7a0);box-shadow:0 0 8px rgba(255,215,112,.75);transition:width .08s linear}.preloader-skip{position:absolute;z-index:5;right:17px;bottom:16px;border:0;background:transparent;color:#7a6a52;font:600 9px 'DM Sans',sans-serif;text-decoration:underline;cursor:pointer}
+.preloader-rub{position:absolute;z-index:4;left:50%;bottom:5.5%;width:min(520px,94vw);padding:0;margin:0;border:0;background:transparent;font:inherit;text-align:center;filter:drop-shadow(0 14px 30px rgba(2,25,48,.22));transform:translateX(-50%) translateY(18px);opacity:0;pointer-events:none;cursor:pointer;transition:opacity .35s ease,transform .35s ease}.preloader-rub.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}.preloader-rub-art{display:block;width:100%;height:auto}.preloader-rub-track{position:absolute;left:10%;right:10%;bottom:-2px;height:4px;border-radius:999px;background:rgba(255,255,255,.24);overflow:hidden}.preloader-rub-fill{display:block!important;width:0;height:100%;margin:0!important;border-radius:inherit;background:linear-gradient(90deg,#d29327,#ffe7a0);box-shadow:0 0 8px rgba(255,215,112,.75);transition:width .08s linear}.preloader-skip{position:absolute;z-index:5;left:14px;top:14px;padding:7px 14px;border:1px solid rgba(122,106,82,.35);border-radius:20px;background:rgba(255,255,255,.55);backdrop-filter:blur(4px);color:#5c4c33;font:600 11px 'DM Sans',sans-serif;letter-spacing:.02em;text-decoration:none;cursor:pointer}
 .preloader-dots{display:none;gap:7px}
 .preloader-dots span{width:6px;height:6px;border-radius:50%;background:rgba(184,131,42,0.3);animation:pdot 1.3s ease-in-out infinite}
 .preloader-dots span:nth-child(2){animation-delay:0.18s}
@@ -2037,9 +2037,7 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
     <img class="approved-summary-reference" src="assets/home-walter-piggybank-mobile-v2.png" alt="Une analyse en deux minutes, gratuite, sans engagement et confidentielle">
     <div class="approved-summary-slice approved-summary-main" aria-hidden="true"><img src="assets/ui/Bulle-accueil_bottom.png" alt=""></div>
     <button class="approved-start-button approved-start-button-summary" type="button" onclick="startForm()" aria-label="Commencer mon analyse">
-      <video class="approved-start-button-video" autoplay muted playsinline preload="auto" poster="assets/start-analysis-button.png" aria-hidden="true" onended="clearTimeout(this.restartTimer);this.restartTimer=setTimeout(()=>{this.currentTime=0;this.play().catch(function(){})},4000)">
-        <source src="assets/start-analysis-button-animated.mp4" type="video/mp4">
-      </video>
+      <img class="approved-start-button-video" src="assets/start-analysis-button.png" alt="" aria-hidden="true">
     </button>
     <div class="approved-summary-slice approved-summary-trust" aria-hidden="true"><img src="assets/ui/Bulle-accueil_bottom.png" alt=""></div>
     <header class="approved-summary-heading">
@@ -2418,8 +2416,8 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
   let rubLastY = 0;
   let rubDistance = 0;
   let revealDuration = 6;
-  const fallPlaybackRate = 1.65;
-  const revealPlaybackRate = 1.45;
+  const fallPlaybackRate = 2.4;
+  const revealPlaybackRate = 2.1;
   function hidePreloader(){
     if(hidden) return;
     hidden = true;
