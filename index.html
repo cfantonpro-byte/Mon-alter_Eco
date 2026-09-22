@@ -12,6 +12,12 @@
     || alterEcoHost.startsWith('100.')
     || alterEcoHost.endsWith('.ts.net');
   if(window.ALTER_ECO_TEST_MODE) document.documentElement.classList.add('test-mode');
+  // Variante d'expérimentation masquée : étape 8 réduite aux seules
+  // coordonnées (sans les cartes potentiel/pistes/économie), accessible
+  // uniquement via ?variant=lite — n'affecte jamais les visiteurs normaux
+  // ni la page actuelle.
+  window.ALTER_ECO_VARIANT_LITE = new URLSearchParams(window.location.search).get('variant') === 'lite';
+  if(window.ALTER_ECO_VARIANT_LITE) document.documentElement.classList.add('variant-lite');
   window.dataLayer = window.dataLayer || [];
   window.gtag = function(){
     if(!window.ALTER_ECO_TEST_MODE) window.dataLayer.push(arguments);
@@ -1918,6 +1924,15 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
 .show-form #s8 .contact-section .cta-full{margin-top:0!important}
 .show-form #s8 .contact-section{border-top:0!important}
 .show-form #s8 .inp-lbl{color:#173f68!important}
+/* Variante masquée (?variant=lite) : étape 8 réduite aux coordonnées
+   seules, sans toucher au markup/JS existant (mêmes ids, mêmes
+   fonctions) — juste une variation d'affichage, activable/désactivable
+   sans rien casser sur la page normale. */
+html.variant-lite .show-form #s8 .recap-box,
+html.variant-lite .show-form #s8 .result-insights,
+html.variant-lite .show-form #s8 .est-grid{display:none!important}
+html.variant-lite .show-form #s8.active{grid-template-rows:auto auto auto!important;align-content:start!important}
+html.variant-lite .show-form #s8 .contact-section{margin-top:22px!important}
 .show-form #s8 .est{position:relative}
 .show-form #s8 .est-lbl{display:flex;align-items:center;gap:4px;flex-wrap:wrap;row-gap:5px}
 .est-horizon-toggle{display:inline-flex;gap:3px;margin-left:auto}
@@ -2884,6 +2899,22 @@ function tog(el,val,msg){
   else OBJ.delete(val);
   document.getElementById('b3').disabled=OBJ.size===0;
 }
+
+// Conserve l'objectif choisi sur le site vitrine jusqu'à l'étape des objectifs.
+(function preselectProjectFromLandingPage(){
+  const project=new URLSearchParams(window.location.search).get('projet');
+  const choices={
+    epargne:['Valoriser mon épargne','Valoriser mon épargne'],
+    retraite:['Préparer ma retraite','Préparer ma retraite'],
+    fiscalite:['Réduire mes impôts','Réduire mon imposition'],
+    immobilier:['Investir en immobilier',"Investir dans l'immobilier"],
+    protection:['Protéger ma famille','Protéger ma famille']
+  };
+  const choice=Object.prototype.hasOwnProperty.call(choices,project)?choices[project]:null;
+  if(!choice)return;
+  const option=Array.from(document.querySelectorAll('#s3 .opt')).find(el=>el.querySelector('.opt-lbl')?.textContent.trim()===choice[0]);
+  if(option && !option.classList.contains('sel'))tog(option,choice[1]);
+})();
 
 function fmt(n){return n.toLocaleString('fr-FR')}
 let growthHorizonYears=10;
