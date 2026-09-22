@@ -2404,8 +2404,16 @@ body.show-form{padding-top:116px}.show-form .formpage{height:calc(100dvh - 116px
 <script src="js/study-engine.js?v=091515g"></script>
 <script>
 // ===== PRELOADER =====
+// Désactivé temporairement (arrivée directe sur la page de démarrage) sans
+// retirer le code/markup, pour pouvoir le réactiver facilement plus tard :
+// il suffit de repasser PRELOADER_ENABLED à true.
+const PRELOADER_ENABLED = false;
 (function(){
   const pre = document.getElementById('preloader');
+  if(!PRELOADER_ENABLED){
+    pre.style.display='none';
+    return;
+  }
   const stage = document.getElementById('preloader-stage');
   const fall = document.getElementById('preloader-fall');
   const reveal = document.getElementById('preloader-reveal');
