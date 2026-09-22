@@ -2844,9 +2844,11 @@ function go(n){
     // de remplir le formulaire : la bulle continue de vivre pendant la lecture
     // au lieu de rester figée après son animation d'arrivée.
     const idleMsgs=[
-      "Astuce : ajustez l'horizon (1/5/10 ans) pour affiner votre potentiel.",
+      // La carte "Potentiel de croissance" (avec les boutons d'horizon) est
+      // masquée en variante lite : ce conseil n'a alors pas de sens.
+      window.ALTER_ECO_VARIANT_LITE ? null : "Astuce : ajustez l'horizon (1/5/10 ans) pour affiner votre potentiel.",
       '✨ Le génie garde encore quelques tours de magie pour affiner votre étude...'
-    ];
+    ].filter(Boolean);
     idleMsgs.forEach((msg,i)=>{
       walterIdleTimers.push(setTimeout(()=>{if(currentStep===8)genie(msg);},8000+i*9000));
     });
