@@ -193,7 +193,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
   .plan-step-dot{width:22px;height:22px;font-size:10px}
   .plan-step b{font-size:12px}
   .plan-step small{font-size:9px}
-  footer{padding:10px 16px 18px;font-size:8.5px;line-height:1.4}
+  footer{padding:10px 16px 18px;font-size:10px;line-height:1.45}
   .recap-piste-row{gap:10px;margin-bottom:6px}
   .recap-piste-row h2{font-size:16px}
   .recap-piste-row .shell-icon-badge{width:34px;height:34px}
@@ -504,7 +504,7 @@ main{max-width:1040px;padding-bottom:76px}
 .tabview[data-view="pistes"] .hero-piste-why{color:#9b6b1f}
 .tabview[data-view="pistes"] .chip{color:#214f79;border-color:rgba(190,134,35,.2);background:rgba(250,239,213,.72)}
 .tabview[data-view="pistes"] .hero-piste-media::after{background:linear-gradient(90deg,#fffaf0 0%,rgba(255,250,240,.4) 24%,transparent 62%)}
-.tabview[data-view="pistes"] .hero-piste .cta-gold{color:#fff}
+.tabview[data-view="pistes"] .hero-piste .cta-gold{color:#051d38}
 
 .next-study-step{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:12px 8px 0;padding:20px 24px;border-radius:14px;background:#062b4d;color:#fff}
 .next-study-step>div{display:flex;align-items:center;gap:13px}.next-study-step small{display:block;color:#e8c36d;text-transform:uppercase;letter-spacing:.13em;font-size:9px}.next-study-step strong{display:block;font-family:var(--serif);font-size:21px;font-weight:500;margin-top:3px}
@@ -948,7 +948,7 @@ body.study-page.has-app-shell{padding-top:92px}
   border-radius:999px;
   background:linear-gradient(105deg,#b87816,#f2cc68 52%,#d6a039);
   box-shadow:0 11px 23px rgba(145,94,12,.18);
-  color:#082e56;
+  color:#051d38;
   text-shadow:0 1px rgba(255,255,255,.3);
 }
 
