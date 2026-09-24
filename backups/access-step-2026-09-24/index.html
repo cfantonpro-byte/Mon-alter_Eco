@@ -2424,15 +2424,11 @@ html.variant-lite .show-form #s8 .est-grid{order:4}
 // Désactivé temporairement (arrivée directe sur la page de démarrage) sans
 // retirer le code/markup, pour pouvoir le réactiver facilement plus tard :
 // il suffit de repasser PRELOADER_ENABLED à true.
-const PRELOADER_ENABLED = true;
-// L’accueil reste conservé ; false permet de rétablir l’étape Démarrer.
-const SKIP_START_PAGE = true;
-if(SKIP_START_PAGE)document.getElementById('page-home').style.display='none';
+const PRELOADER_ENABLED = false;
 (function(){
   const pre = document.getElementById('preloader');
   if(!PRELOADER_ENABLED){
     pre.style.display='none';
-    if(SKIP_START_PAGE)window.addEventListener('DOMContentLoaded',startForm,{once:true});
     return;
   }
   const stage = document.getElementById('preloader-stage');
@@ -2453,7 +2449,6 @@ if(SKIP_START_PAGE)document.getElementById('page-home').style.display='none';
   function hidePreloader(){
     if(hidden) return;
     hidden = true;
-    if(SKIP_START_PAGE)startForm();
     pre.classList.add('hide');
   }
   function inviteRub(){
@@ -2628,7 +2623,6 @@ function toggleWalterAdvice(){
 }
 window.toggleWalterAdvice=toggleWalterAdvice;
 function goHome(){
-  if(SKIP_START_PAGE){go(1);window.scrollTo(0,0);return;}
   document.getElementById('page-home').style.display='';
   document.body.classList.remove('show-form');
   document.body.classList.remove('has-app-shell');
