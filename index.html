@@ -2424,9 +2424,9 @@ html.variant-lite .show-form #s8 .est-grid{order:4}
 // Désactivé temporairement (arrivée directe sur la page de démarrage) sans
 // retirer le code/markup, pour pouvoir le réactiver facilement plus tard :
 // il suffit de repasser PRELOADER_ENABLED à true.
-const PRELOADER_ENABLED = true;
+const PRELOADER_ENABLED = false;
 // L’accueil reste conservé ; false permet de rétablir l’étape Démarrer.
-const SKIP_START_PAGE = true;
+const SKIP_START_PAGE = false;
 if(SKIP_START_PAGE)document.getElementById('page-home').style.display='none';
 (function(){
   const pre = document.getElementById('preloader');
