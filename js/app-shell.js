@@ -62,7 +62,7 @@
       '<div class="shell-bar">' +
         '<div class="shell-menu-wrap"><button class="shell-menu-btn" type="button" aria-label="Menu" data-shell-menu aria-expanded="false">' + icon('menu',20) + '</button>' +
           '<div class="shell-menu-panel" hidden><button type="button" data-legal>Mentions légales & confidentialité</button></div></div>' +
-        '<a class="shell-logo" href="index.html" data-shell-home aria-label="Retour à l’accueil"><img src="assets/logo-white-gold-transparent.png" alt="Mon Alter-€co"></a>' +
+        '<span class="shell-logo" aria-hidden="true"><img src="assets/logo-white-gold-transparent.png" alt="Mon Alter-€co"></span>' +
         (opts.walterToggle
           ? '<button class="shell-avatar shell-avatar--active" type="button" data-walter-toggle aria-label="Désactiver les conseils de Walter" aria-pressed="true"><img src="assets/walter-chat-avatar.png" alt="Walter"></button>'
           : '<span class="shell-avatar" aria-hidden="true"><img src="assets/walter-chat-avatar.png" alt=""></span>') +
@@ -151,6 +151,9 @@
           }
           return;
         }
+        // L'étape active ne doit rien faire au clic : "naviguer" vers l'étape
+        // où l'on est déjà rechargeait la page et effaçait la progression.
+        if(btn.getAttribute('aria-current')==='true') return;
         defaultNavigate(btn.dataset.nav, opts);
       };
       if(container===top){
