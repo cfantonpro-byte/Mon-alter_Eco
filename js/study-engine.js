@@ -151,15 +151,18 @@ function computePotentialScore(profile, solutions){
   const age = profile.age;
   const horizonScore = age <= 0 ? 12.5 : age <= 35 ? 25 : age <= 50 ? 18 : age <= 60 ? 12 : 6;
   const diversityScore = Math.min(solutions.length, 4) / 4 * 25;
-  const rawScore = Math.round(epargneScore + mensuelScore + horizonScore + diversityScore);
+  // Bonus de générosité : l'indicateur reste exploratoire, mais un score qui
+  // paraît trop sévère décourage sans raison — on ajoute une marge fixe
+  // avant application du plancher.
+  const rawScore = Math.round(epargneScore + mensuelScore + horizonScore + diversityScore) + 10;
   // Plancher : un score trop bas décourage sans raison, l'indicateur reste
   // exploratoire. On autorise une exception seulement pour le profil vraiment
   // minimal sur tous les indicateurs financiers (impôt, épargne mensuelle et
   // épargne totale au plus bas de leurs échelles), sans pour autant descendre
   // trop près de 0.
   const isMinimalProfile = profile.impot <= 500 && profile.mensuel <= 50 && profile.epargne <= 5000;
-  const floor = isMinimalProfile ? 35 : 55;
-  return Math.max(rawScore, floor);
+  const floor = isMinimalProfile ? 42 : 62;
+  return Math.min(100, Math.max(rawScore, floor));
 }
 
 function computeCapacityRange(profile){

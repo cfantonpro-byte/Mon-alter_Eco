@@ -321,6 +321,11 @@ body:not(.show-form) .form-sparkle{display:none}
 
 .screen{display:none}
 .screen.active{display:block;animation:fu 0.4s cubic-bezier(.4,0,.2,1) forwards}
+/* Transition entre écrans : la page est une carte qui se retourne */
+@keyframes flipOutL{0%{rotate:0 1 0 0deg;box-shadow:0 0 0 rgba(26,18,6,0);filter:brightness(1);opacity:1}85%{opacity:1}100%{rotate:0 1 0 -90deg;box-shadow:0 14px 34px rgba(26,18,6,.2);filter:brightness(.88);opacity:0}}
+@keyframes flipOutR{0%{rotate:0 1 0 0deg;box-shadow:0 0 0 rgba(26,18,6,0);filter:brightness(1);opacity:1}85%{opacity:1}100%{rotate:0 1 0 90deg;box-shadow:0 14px 34px rgba(26,18,6,.2);filter:brightness(.88);opacity:0}}
+@keyframes flipInR{0%{rotate:0 1 0 90deg;box-shadow:0 14px 34px rgba(26,18,6,.2);filter:brightness(.88);opacity:0}12%{opacity:1}100%{rotate:0 1 0 0deg;box-shadow:0 0 0 rgba(26,18,6,0);filter:brightness(1);opacity:1}}
+@keyframes flipInL{0%{rotate:0 1 0 -90deg;box-shadow:0 14px 34px rgba(26,18,6,.2);filter:brightness(.88);opacity:0}12%{opacity:1}100%{rotate:0 1 0 0deg;box-shadow:0 0 0 rgba(26,18,6,0);filter:brightness(1);opacity:1}}
 @keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @keyframes genieIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .genie-animating{animation:genieIn 0.32s cubic-bezier(.4,0,.2,1) forwards}
@@ -351,6 +356,9 @@ body:not(.show-form) .form-sparkle{display:none}
 .cta:disabled{opacity:0.22;cursor:not-allowed;transform:none;box-shadow:none}
 .cta-full{width:100%;margin-top:0.5rem;flex:none}
 
+/* Bloc « Dispositifs d'optimisation identifiés » masqué temporairement : retirer cette règle pour le remettre */
+#est-live,body.show-form #s5 #est-live{display:none!important}
+.show-form #s5>#slider-tax{grid-row:6}
 .slider-section{background:var(--bg);border:1.5px solid var(--border);border-radius:13px;padding:1.15rem 1.25rem;margin-bottom:1rem}
 .slider-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
 .slider-title{font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text3);font-weight:700}
@@ -557,6 +565,42 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
   margin-top:0.85rem;
 }
 .otp-resend:disabled{opacity:0.5;cursor:default;text-decoration:none}
+.otp-overlay.active{animation:otpFade .25s ease}
+.otp-overlay.active .otp-box{animation:otpPop .4s cubic-bezier(.2,.8,.2,1)}
+.otp-cells.shake{animation:otpShake .4s}
+/* Glassmorphism */
+.otp-overlay{-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px)}
+.otp-box{position:relative;isolation:isolate;overflow:hidden;background:linear-gradient(145deg,rgba(255,255,255,.78),rgba(255,255,255,.46));-webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%);border:1px solid rgba(255,255,255,.7);box-shadow:0 24px 64px rgba(26,18,6,.32),inset 0 1px 0 rgba(255,255,255,.85)}
+.otp-box::before,.otp-box::after{content:'';position:absolute;z-index:-1;border-radius:50%;filter:blur(38px);pointer-events:none}
+.otp-box::before{width:170px;height:170px;top:-60px;left:-50px;background:rgba(184,131,42,.38)}
+.otp-box::after{width:150px;height:150px;bottom:-55px;right:-40px;background:rgba(41,82,184,.26)}
+.otp-cells{position:relative;display:flex;gap:8px;justify-content:center;margin-bottom:.6rem}
+.otp-cells .otp-input{position:absolute;inset:0;width:100%;height:100%;opacity:0;z-index:2;font-size:16px;letter-spacing:0;margin:0;padding:0;cursor:text}
+.otp-cell{flex:1;max-width:48px;aspect-ratio:1/1.18;display:grid;place-items:center;font:600 22px 'Sora',sans-serif;color:var(--text);background:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.85);border-radius:12px;box-shadow:0 2px 10px rgba(26,18,6,.07),inset 0 1px 0 rgba(255,255,255,.8);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:border-color .2s,box-shadow .2s,transform .2s,background .2s}
+.otp-cell.filled{background:rgba(255,255,255,.88)}
+.otp-cell.active{border-color:var(--gold);transform:translateY(-2px);box-shadow:0 0 0 3px rgba(184,131,42,.22),0 8px 18px rgba(184,131,42,.18)}
+.otp-cell.active:not(.filled)::after{content:'';width:2px;height:22px;background:var(--gold);animation:otpCaret 1s steps(1) infinite}
+.otp-cell.pop{animation:otpCellPop .26s cubic-bezier(.2,.9,.3,1.4)}
+.otp-cells.error .otp-cell{border-color:#b8323a;background:rgba(184,50,58,.08);box-shadow:0 0 0 3px rgba(184,50,58,.12)}
+.otp-cells.success .otp-cell{border-color:#2f7d4f;background:rgba(47,125,79,.12);color:#1f5e3a;animation:otpCellPop .4s cubic-bezier(.2,.9,.3,1.4) both;animation-delay:calc(var(--i)*55ms)}
+@keyframes otpCaret{50%{opacity:0}}
+@keyframes otpCellPop{0%{transform:scale(.8)}60%{transform:scale(1.1)}100%{transform:scale(1)}}
+.otp-status{min-height:20px;display:flex;align-items:center;justify-content:center;gap:9px;font-size:13px;font-weight:600;color:var(--text2)}
+.otp-feedback{display:grid;margin-bottom:.1rem}
+.otp-feedback>*{grid-area:1/1}
+#otp-overlay .otp-box{max-width:360px;padding:1.4rem 1.35rem 1.1rem}
+#otp-overlay .otp-title{font-size:17px;margin-bottom:.35rem}
+#otp-overlay .otp-sub{margin-bottom:1rem}
+#otp-overlay .otp-cells{margin-bottom:.4rem}
+#otp-overlay .otp-error{min-height:18px;margin-bottom:0}
+#otp-overlay .otp-resend{margin-top:.5rem}
+.otp-status.is-loading::before{content:'';width:13px;height:13px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:otpSpin .7s linear infinite}
+.otp-status.is-ok{color:#2f7d4f;animation:otpPop .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes otpFade{from{opacity:0}to{opacity:1}}
+@keyframes otpPop{from{opacity:0;transform:translateY(14px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes otpShake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+@keyframes otpSpin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.otp-overlay.active,.otp-overlay.active .otp-box,.otp-cells.shake,.otp-cell.pop,.otp-cells.success .otp-cell,.otp-status.is-ok{animation:none}.otp-status.is-loading::before{animation-duration:2s}}
 
 /* ============ DIRECTION PREMIUM — SIMULATEUR ============ */
 .page-home{position:relative;background:linear-gradient(118deg,#f6f1e8 0%,#fffdf9 58%,#e8dfd0 100%);isolation:isolate}
@@ -2229,28 +2273,14 @@ html.variant-lite .show-form #s8 .est-grid{order:4}
           <div class="opt" onclick="tog(this,'Anticiper ma transmission','Anticiper la transmission de son patrimoine permet d\'en optimiser la fiscalité.')"><div class="chk">✓</div><span class="opt-icon"><img class="objective-default" src="assets/objective-transmission-default.png" alt=""><img class="objective-selected" src="assets/objective-transmission-selected.png" alt=""></span><span class="opt-lbl">Anticiper ma transmission</span></div>
           <div class="opt" onclick="tog(this,'Autres','Votre analyse sera adaptée à vos besoins spécifiques.')"><div class="chk">✓</div><span class="opt-icon"><img class="objective-default" src="assets/objective-other-default.png" alt=""><img class="objective-selected" src="assets/objective-other-selected.png" alt=""></span><span class="opt-lbl">Autres</span></div>
         </div>
-        <div class="nav"><button class="back" onclick="go(2)">← Retour</button><button class="cta" id="b3" disabled onclick="go(4)">Continuer →</button></div>
-      </div>
-
-      <!-- S4 FISCALITÉ -->
-      <div class="screen" id="s4">
-        <span class="stag">Votre fiscalité</span>
-        <div class="sh1">Votre imposition annuelle ?</div>
-        <div class="opts c1">
-          <div class="opt" onclick="pick(this,'impot','500','À ce niveau, des solutions d\'optimisation simples peuvent déjà être envisagées.')"><div class="chk">✓</div><span class="opt-lbl">Moins de 2 500 €</span><span class="opt-sub">Tranche basse</span></div>
-          <div class="opt" onclick="pick(this,'impot','3750','Plusieurs dispositifs permettent de réduire significativement cette charge fiscale.')"><div class="chk">✓</div><span class="opt-lbl">Entre 2 500 € et 5 000 €</span><span class="opt-sub">Tranche intermédiaire</span></div>
-          <div class="opt" onclick="pick(this,'impot','6250','À ce niveau d\'imposition, les leviers d\'optimisation deviennent particulièrement pertinents.')"><div class="chk">✓</div><span class="opt-lbl">Entre 5 000 € et 7 500 €</span><span class="opt-sub">Tranche élevée</span></div>
-          <div class="opt" onclick="pick(this,'impot','10000','Votre potentiel d\'optimisation fiscale est significatif à ce niveau d\'imposition.')"><div class="chk">✓</div><span class="opt-lbl">Plus de 7 500 €</span><span class="opt-sub">Forte imposition</span></div>
-        </div>
-        <div class="nav"><button class="back" onclick="go(3)">← Retour</button><button class="cta" id="b4" disabled onclick="go(5)">Continuer →</button></div>
-        <div class="step-reassure">🔒 Vos données sont traitées de manière confidentielle.</div>
+        <div class="nav"><button class="back" onclick="go(2)">← Retour</button><button class="cta" id="b3" disabled onclick="go(5)">Continuer →</button></div>
       </div>
 
       <!-- S5 ÉPARGNE (sliders) -->
       <div class="screen" id="s5">
-        <span class="stag">Votre épargne</span>
-        <div class="sh1">Parlons de votre épargne</div>
-        <div class="savings-help">Ajustez votre épargne pour révéler les dispositifs d’optimisation adaptés à votre situation.</div>
+        <span class="stag">Épargne et fiscalité</span>
+        <div class="sh1">Parlons de vos finances</div>
+        <div class="savings-help">Ajustez les trois curseurs pour affiner votre analyse.</div>
 
         <div class="slider-section" id="slider-monthly">
           <div class="slider-header"><span class="slider-title">Capacité mensuelle</span><span class="slider-current" id="lbl-mens">—</span></div>
@@ -2262,6 +2292,12 @@ html.variant-lite .show-form #s8 .est-grid{order:4}
           <div class="slider-header"><span class="slider-title">Épargne totale</span><span class="slider-current" id="lbl-total">—</span></div>
           <input type="range" id="sl-total" min="0" max="5" step="1" value="0" oninput="slideT(this.value)" style="--pct:0%">
           <div class="slider-labels"><span class="slider-label">&lt;10k</span><span class="slider-label">10-30k</span><span class="slider-label">30-50k</span><span class="slider-label">50-100k</span><span class="slider-label">100-200k</span><span class="slider-label">&gt;200k</span></div>
+        </div>
+
+        <div class="slider-section" id="slider-tax">
+          <div class="slider-header"><span class="slider-title">Imposition annuelle</span><span class="slider-current" id="lbl-tax">—</span></div>
+          <input type="range" id="sl-tax" min="0" max="3" step="1" value="0" oninput="slideX(this.value)" style="--pct:0%">
+          <div class="slider-labels"><span class="slider-label">&lt;2,5k€</span><span class="slider-label">2,5-5k€</span><span class="slider-label">5-7,5k€</span><span class="slider-label">&gt;7,5k€</span></div>
         </div>
 
         <div id="est-live" style="display:none">
@@ -2282,7 +2318,7 @@ html.variant-lite .show-form #s8 .est-grid{order:4}
           </div>
         </div>
 
-        <div class="nav"><button class="back" onclick="go(4)">← Retour</button><button class="cta" id="b5" disabled onclick="go(6)">Voir mon analyse →</button></div>
+        <div class="nav"><button class="back" onclick="go(3)">← Retour</button><button class="cta" id="b5" disabled onclick="go(6)">Voir mon analyse →</button></div>
         <div class="step-reassure">🔒 Vos données sont traitées de manière confidentielle.</div>
       </div>
 
@@ -2366,7 +2402,8 @@ html.variant-lite .show-form #s8 .est-grid{order:4}
               <div class="inp-wrap"><label class="inp-lbl">Prénom</label><input class="inp" id="i-prenom" type="text" placeholder="Jean" autocomplete="given-name" oninput="chk8()"></div>
               <div class="inp-wrap"><label class="inp-lbl">Nom</label><input class="inp" id="i-nom" type="text" placeholder="Dupont" autocomplete="family-name" oninput="chk8()"></div>
             </div>
-            <div class="inp-wrap"><label class="inp-lbl" for="i-tel">Numéro de téléphone</label><input class="inp" id="i-tel" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="06 12 34 56 78" oninput="chk8()"></div>
+            <div class="inp-wrap"><label class="inp-lbl" for="i-tel">Numéro de téléphone</label><input class="inp" id="i-tel" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="06 12 34 56 78" oninput="chk8()" onblur="hintTel()"></div>
+            <label style="display:flex;gap:.5rem;align-items:flex-start;font-size:12.5px;line-height:1.4;cursor:pointer"><input type="checkbox" id="i-consent" style="width:16px;height:16px;margin-top:2px;flex:none" onchange="chk8()"><span>J’accepte d’être rappelé par un professionnel partenaire, sans démarchage abusif.</span></label>
           </div>
           <button class="cta cta-full" id="b8" disabled onclick="goWithSubmit()">Découvrir mon analyse →</button>
         </section>
@@ -2380,9 +2417,8 @@ html.variant-lite .show-form #s8 .est-grid{order:4}
     <div class="otp-box">
       <div class="otp-title">Vérification de votre numéro</div>
       <div class="otp-sub" id="otp-sub">Un code a été envoyé par SMS au <span id="otp-phone-display"></span>.</div>
-      <input class="otp-input" id="otp-code" type="text" inputmode="numeric" maxlength="6" placeholder="• • • • • •" oninput="this.value=this.value.replace(/\D/g,'');chkOtpInput()">
-      <div class="otp-error" id="otp-error"></div>
-      <button class="cta cta-full" id="otp-verify-btn" disabled onclick="verifyOtp()">Valider le code</button>
+      <div class="otp-cells" id="otp-cells"><input class="otp-input" id="otp-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" aria-label="Code reçu par SMS" oninput="this.value=this.value.replace(/\D/g,'');chkOtpInput();renderOtpCells()" onfocus="renderOtpCells()" onblur="renderOtpCells()"><span class="otp-cell" style="--i:0"></span><span class="otp-cell" style="--i:1"></span><span class="otp-cell" style="--i:2"></span><span class="otp-cell" style="--i:3"></span><span class="otp-cell" style="--i:4"></span><span class="otp-cell" style="--i:5"></span></div>
+      <div class="otp-feedback"><div class="otp-error" id="otp-error"></div><div class="otp-status" id="otp-status" role="status" aria-live="polite"></div></div>
       <button class="otp-resend" id="otp-resend-btn" onclick="resendOtp()">Renvoyer le code</button>
       <button onclick="closeOtpPopup()" style="display:block;width:100%;margin-top:8px;background:none;border:none;font-size:12px;color:var(--text3);cursor:pointer;font-family:'Sora',sans-serif;padding:6px">← Corriger mon numéro</button>
     </div>
@@ -2424,9 +2460,9 @@ html.variant-lite .show-form #s8 .est-grid{order:4}
 // Désactivé temporairement (arrivée directe sur la page de démarrage) sans
 // retirer le code/markup, pour pouvoir le réactiver facilement plus tard :
 // il suffit de repasser PRELOADER_ENABLED à true.
-const PRELOADER_ENABLED = true;
+const PRELOADER_ENABLED = false;
 // L’accueil reste conservé ; false permet de rétablir l’étape Démarrer.
-const SKIP_START_PAGE = true;
+const SKIP_START_PAGE = false;
 if(SKIP_START_PAGE)document.getElementById('page-home').style.display='none';
 (function(){
   const pre = document.getElementById('preloader');
@@ -2516,7 +2552,7 @@ let autoAdvanceTimer = null;
 let currentStep = 1;
 let walterAdviceEnabled = true;
 const STEPS = [null,'Profil','Famille','Objectifs','Fiscalité','Épargne','Localisation',null,'Résultats',null];
-const TOTAL = 7;
+const TOTAL = 6;
 
 // Suivi temps réel en parallèle de GA4 (qui a un délai de traitement) :
 // même Session ID pour tous les événements d'une visite, best-effort
@@ -2684,7 +2720,7 @@ const DEFAULT_MSGS = {
   2: 'Votre situation familiale a un impact direct sur les stratégies fiscales applicables.',
   3: 'Sélectionnez jusqu\'à 4 objectifs prioritaires. Cela permet d\'affiner les recommandations.',
   4: 'Le niveau d\'imposition est un critère déterminant pour identifier les leviers d\'optimisation.',
-  5: 'Bougez les curseurs pour visualiser votre potentiel de croissance en temps réel.',
+  5: 'Bougez les trois curseurs pour affiner votre potentiel.',
   6: 'Quelques informations complémentaires pour finaliser votre analyse personnalisée.'
 };
 
@@ -2696,8 +2732,14 @@ function updateSliderBg(el){
   const pct=range>0?((Number(el.value)-Number(el.min))/range)*100:0;
   el.style.setProperty('--pct',pct+'%');
 }
-function slideM(v){const i=parseInt(v);mIdx=i;D.mens=MENS_VALS[i];D.mensLabel=MENS_LBLS_AIRTABLE[i];const slider=document.getElementById('sl-mens');slider.dataset.touched='true';document.getElementById('lbl-mens').textContent=MENS_LBLS[i];updateSliderBg(slider);genie(MSGS_M[i]);if(tIdx>=0){document.getElementById('b5').disabled=false;showLive();}}
-function slideT(v){const i=parseInt(v);tIdx=i;D.total=TOTAL_VALS[i];D.totalLabel=TOTAL_LBLS_AIRTABLE[i];const slider=document.getElementById('sl-total');slider.dataset.touched='true';document.getElementById('lbl-total').textContent=TOTAL_LBLS[i];updateSliderBg(slider);if(mIdx<0)genie('Vous pouvez maintenant ajuster votre épargne totale actuelle avec le second curseur.');else{genie(MSGS_T[i]);document.getElementById('b5').disabled=false;showLive();}}
+function slideM(v){const i=parseInt(v);mIdx=i;D.mens=MENS_VALS[i];D.mensLabel=MENS_LBLS_AIRTABLE[i];const slider=document.getElementById('sl-mens');slider.dataset.touched='true';document.getElementById('lbl-mens').textContent=MENS_LBLS[i];updateSliderBg(slider);genie(MSGS_M[i]);if(tIdx>=0){showLive();chk5();}}
+function slideT(v){const i=parseInt(v);tIdx=i;D.total=TOTAL_VALS[i];D.totalLabel=TOTAL_LBLS_AIRTABLE[i];const slider=document.getElementById('sl-total');slider.dataset.touched='true';document.getElementById('lbl-total').textContent=TOTAL_LBLS[i];updateSliderBg(slider);if(mIdx<0)genie('Vous pouvez maintenant ajuster votre épargne totale actuelle avec le second curseur.');else{genie(MSGS_T[i]);showLive();chk5();}}
+const TAX_VALS=[500,3750,6250,10000];
+const TAX_LBLS_AIRTABLE=['Moins de 2 500 €','Entre 2 500 € et 5 000 €','Entre 5 000 € et 7 500 €','Plus de 7 500 €'];
+const TAX_LBLS=['Moins de 2 500 €','2 500–5 000 €','5 000–7 500 €','Plus de 7 500 €'];
+const MSGS_X=['À ce niveau, des solutions d\'optimisation simples peuvent déjà être envisagées.','Plusieurs dispositifs permettent de réduire significativement cette charge fiscale.','À ce niveau d\'imposition, les leviers d\'optimisation deviennent particulièrement pertinents.','Votre potentiel d\'optimisation fiscale est significatif à ce niveau d\'imposition.'];
+function slideX(v){const i=parseInt(v);D.impot=String(TAX_VALS[i]);D.impotLabel=TAX_LBLS_AIRTABLE[i];const slider=document.getElementById('sl-tax');slider.dataset.touched='true';document.getElementById('lbl-tax').textContent=TAX_LBLS[i];updateSliderBg(slider);genie(MSGS_X[i]);chk5();}
+function chk5(){document.getElementById('b5').disabled=!(mIdx>=0&&tIdx>=0&&D.impot);}
 function toggleStrategyTip(event,card){
   event.stopPropagation();
   const willOpen=!card.classList.contains('tip-open');
@@ -2737,11 +2779,12 @@ function showLive(){
 }
 
 function prog(n){
-  const pct = n===0 ? 0 : Math.round((Math.min(n,TOTAL)/TOTAL)*100);
+  const e = n>4 && n<8 ? n-1 : n;
+  const pct = n===0 ? 0 : Math.round((Math.min(e,TOTAL)/TOTAL)*100);
   const fill=document.getElementById('pf2'), label=document.getElementById('ps2'), count=document.getElementById('pp2');
   if(fill) fill.style.width = pct+'%';
   if(label) label.textContent = STEPS[n] || '';
-  if(count) count.textContent = (n>0 && n<7) ? ('Étape '+n+' / '+TOTAL) : '';
+  if(count) count.textContent = (n>0 && n<7) ? ('Étape '+e+' / '+TOTAL) : '';
 }
 function genie(txt){
   if(currentStep===7) txt='Veuillez patienter, l\'analyse de votre dossier est en cours...';
@@ -2875,7 +2918,33 @@ function go(n){
   const gr = document.querySelector('.genie-row');
   if(gr) gr.style.display = '';
 }
-function show(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('s'+n).classList.add('active');}
+const OUT_MS=330,IN_MS=400,IN_DELAY=310;
+function show(n){
+  clearTimeout(show.t);
+  document.querySelectorAll('.page-ghost').forEach(g=>g.remove());
+  const prev=document.querySelector('.screen.active'),next=document.getElementById('s'+n);
+  const move=prev&&prev!==next&&!matchMedia('(prefers-reduced-motion:reduce)').matches;
+  let ghost=null,forward=true;
+  if(move){
+    forward=parseInt(next.id.slice(1))>parseInt(prev.id.slice(1));
+    ghost=prev.cloneNode(true);
+    const from=prev.querySelectorAll('input,select,textarea'),to=ghost.querySelectorAll('input,select,textarea');
+    from.forEach((el,i)=>{if(to[i]){to[i].value=el.value;to[i].checked=el.checked;}});
+    ghost.classList.add('page-ghost');
+    ghost.setAttribute('aria-hidden','true');
+    ghost.style.cssText=`position:absolute;left:${prev.offsetLeft}px;top:${prev.offsetTop}px;width:${prev.offsetWidth}px;height:${prev.offsetHeight}px;margin:0;z-index:5;pointer-events:none;background:#fffdf8;border-radius:12px;animation:${forward?'flipOutL':'flipOutR'} ${OUT_MS}ms cubic-bezier(.45,0,.9,.55) forwards`;
+    prev.parentNode.appendChild(ghost);
+    prev.parentNode.style.perspective='1600px';
+  }
+  document.querySelectorAll('.screen:not(.page-ghost)').forEach(s=>{s.classList.remove('active');s.style.animation='';s.style.background='';s.style.borderRadius='';});
+  next.classList.add('active');
+  if(ghost){
+    next.style.background='#fffdf8';next.style.borderRadius='12px';
+    next.style.animation=`${forward?'flipInR':'flipInL'} ${IN_MS}ms cubic-bezier(.1,.5,.3,1) ${IN_DELAY}ms both`;
+    const stage=ghost.parentNode;
+    show.t=setTimeout(()=>{ghost.remove();stage.style.perspective='';next.style.animation='none';next.style.background='';next.style.borderRadius='';},IN_DELAY+IN_MS+60);
+  }
+}
 
 function pick(el,key,val,msg){
   el.closest('.opts').querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
@@ -2884,12 +2953,12 @@ function pick(el,key,val,msg){
   const lblEl=el.querySelector('.opt-lbl');
   if(lblEl)D[key+'Label']=lblEl.textContent.trim();
   if(msg)genie(msg);
-  const buttonByKey={statut:'b1',famille:'b2',impot:'b4'};
+  const buttonByKey={statut:'b1',famille:'b2'};
   if(buttonByKey[key])document.getElementById(buttonByKey[key]).disabled=false;
 
   // Les réponses exclusives passent automatiquement à l'écran suivant,
   // après un bref retour visuel de sélection.
-  const nextByKey={statut:2,famille:3,impot:5};
+  const nextByKey={statut:2,famille:3};
   if(nextByKey[key] && !walterAdviceEnabled){
     clearTimeout(autoAdvanceTimer);
     autoAdvanceTimer=setTimeout(()=>{
@@ -3112,15 +3181,24 @@ document.addEventListener('click',event=>{
   setTimeout(()=>{if(previous===null)button.removeAttribute('style');else button.setAttribute('style',previous);},650);
 },true);
 function isValidPhone(value){
-  if(!/^[\d\s().-]+$/.test(value.trim()))return false;
-  const digits=value.replace(/\D/g,'');
+  if(!/^\+?[\d\s().-]+$/.test(value.trim()))return false;
+  let digits=value.replace(/\D/g,'');
+  if(/^\+?\s*33/.test(value.trim())&&digits.length===11)digits='0'+digits.slice(2);
   return digits.startsWith('0')?digits.length===10:digits.length===9;
 }
+function hintTel(){
+  const t=document.getElementById('i-tel').value.trim();
+  if(t&&!isValidPhone(t))genie('Vérifiez votre numéro : 10 chiffres, par exemple 06 12 34 56 78.');
+}
+let consentHinted=false;
 function chk8(){
   const p=document.getElementById('i-prenom').value;
   const n=document.getElementById('i-nom').value;
   const t=document.getElementById('i-tel').value.trim();
-  document.getElementById('b8').disabled=!(isValidPersonName(p)&&isValidPersonName(n)&&isValidPhone(t));
+  const infoOk=isValidPersonName(p)&&isValidPersonName(n)&&isValidPhone(t);
+  const consent=document.getElementById('i-consent').checked;
+  document.getElementById('b8').disabled=!(infoOk&&consent);
+  if(infoOk&&!consent&&!consentHinted){consentHinted=true;genie('Il ne reste qu’à cocher la case pour continuer.');}
 }
 
 // ===== VÉRIFICATION SMS (OTP) =====
@@ -3132,7 +3210,7 @@ async function goWithSubmit(){
   if(submitInProgress) return;
   const prenom=document.getElementById('i-prenom').value;
   const nom=document.getElementById('i-nom').value;
-  if(!isValidPersonName(prenom)||!isValidPersonName(nom)||!isValidPhone(document.getElementById('i-tel').value)){chk8();return;}
+  if(!isValidPersonName(prenom)||!isValidPersonName(nom)||!isValidPhone(document.getElementById('i-tel').value)||!document.getElementById('i-consent').checked){chk8();return;}
   submitInProgress = true;
 
   const btn = document.getElementById('b8');
@@ -3184,8 +3262,13 @@ function openOtpPopup(telephone){
   document.getElementById('otp-phone-display').textContent = telephone;
   document.getElementById('otp-code').value = '';
   document.getElementById('otp-error').textContent = '';
-  document.getElementById('otp-verify-btn').disabled = true;
-  document.getElementById('otp-verify-btn').textContent = 'Valider le code';
+  otpBusy = false;
+  const status = document.getElementById('otp-status');
+  status.textContent = '';
+  status.classList.remove('is-loading','is-ok');
+  document.getElementById('otp-code').disabled = false;
+  document.getElementById('otp-cells').classList.remove('success','error','shake');
+  renderOtpCells();
   const resendBtn = document.getElementById('otp-resend-btn');
   resendBtn.disabled = false;
   resendBtn.textContent = 'Renvoyer le code';
@@ -3202,23 +3285,27 @@ function closeOtpPopup(){
   if(b8){ b8.disabled = false; b8.textContent = 'Voir mes pistes personnalisées →'; }
 }
 
+let otpBusy = false;
 function chkOtpInput(){
-  const v = document.getElementById('otp-code').value.trim();
-  document.getElementById('otp-verify-btn').disabled = v.length < 4;
+  if(document.getElementById('otp-code').value.trim().length === 6) verifyOtp();
 }
 
 async function verifyOtp(){
-  const telephone = document.getElementById('i-tel').value.trim();
   const code = document.getElementById('otp-code').value.trim();
-  const verifyBtn = document.getElementById('otp-verify-btn');
+  if(otpBusy || code.length !== 6) return;
+  otpBusy = true;
+  const telephone = document.getElementById('i-tel').value.trim();
+  const status = document.getElementById('otp-status');
   const errorEl = document.getElementById('otp-error');
 
-  verifyBtn.disabled = true;
-  verifyBtn.textContent = 'Vérification...';
+  document.getElementById('otp-code').disabled = true;
+  status.textContent = 'Vérification…';
+  status.classList.add('is-loading');
   errorEl.textContent = '';
 
   if(window.ALTER_ECO_TEST_MODE){
     otpVerifiedPhone = telephone;
+    await otpSuccess(status);
     closeOtpPopup();
     await submitToAirtable();
     return;
@@ -3234,19 +3321,48 @@ async function verifyOtp(){
 
     if(res.ok && data.success){
       otpVerifiedPhone = telephone;
+      await otpSuccess(status);
       closeOtpPopup();
       await submitToAirtable();
     } else {
       errorEl.textContent = 'Code incorrect. Vérifiez le SMS reçu et réessayez.';
-      verifyBtn.disabled = false;
-      verifyBtn.textContent = 'Valider le code';
+      otpFail(status);
     }
   } catch(err){
     console.error('Erreur vérification OTP:', err);
     errorEl.textContent = 'Erreur de connexion. Réessayez.';
-    verifyBtn.disabled = false;
-    verifyBtn.textContent = 'Valider le code';
+    otpFail(status);
   }
+}
+function renderOtpCells(){
+  const input=document.getElementById('otp-code'),cells=document.querySelectorAll('#otp-cells .otp-cell');
+  const box=document.getElementById('otp-cells'),v=input.value;
+  box.classList.remove('error','shake');
+  cells.forEach((c,i)=>{
+    const had=c.classList.contains('filled');
+    c.textContent=v[i]||'';
+    c.classList.toggle('filled',!!v[i]);
+    c.classList.toggle('active',document.activeElement===input&&i===Math.min(v.length,cells.length-1));
+    c.classList.remove('pop');
+    if(v[i]&&!had){void c.offsetWidth;c.classList.add('pop');}
+  });
+}
+function otpFail(status){
+  status.classList.remove('is-loading');
+  status.textContent='';
+  const box=document.getElementById('otp-cells');
+  box.classList.remove('shake');void box.offsetWidth;box.classList.add('error','shake');
+  setTimeout(()=>{
+    const i=document.getElementById('otp-code');
+    i.disabled=false;i.value='';renderOtpCells();i.focus();otpBusy=false;
+  },650);
+}
+async function otpSuccess(status){
+  status.classList.remove('is-loading');
+  status.classList.add('is-ok');
+  document.getElementById('otp-cells').classList.add('success');
+  status.textContent='Numéro vérifié ✓';
+  await new Promise(r=>setTimeout(r,1150));
 }
 
 async function resendOtp(){
@@ -3336,7 +3452,7 @@ async function submitToAirtable(){
     nomPrenom: (document.getElementById('i-prenom').value.trim() + ' ' + document.getElementById('i-nom').value.trim()).trim(),
     telephone: document.getElementById('i-tel').value.trim(),
     objectifs: Array.from(OBJ),
-    consentement: D.consentement || '',
+    consentement: D.consentement || (document.getElementById('i-consent').checked ? 'Oui, avec plaisir' : ''),
     emailConsentement: D.emailConsentement || ''
   };
 
