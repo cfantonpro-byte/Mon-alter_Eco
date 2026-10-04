@@ -2403,7 +2403,7 @@ html.variant-lite .show-form #s8 .est-grid{order:4}
               <div class="inp-wrap"><label class="inp-lbl">Nom</label><input class="inp" id="i-nom" type="text" placeholder="Dupont" autocomplete="family-name" oninput="chk8()"></div>
             </div>
             <div class="inp-wrap"><label class="inp-lbl" for="i-tel">Numéro de téléphone</label><input class="inp" id="i-tel" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="06 12 34 56 78" oninput="chk8()" onblur="hintTel()"></div>
-            <label style="display:flex;gap:.5rem;align-items:flex-start;font-size:12.5px;line-height:1.4;cursor:pointer"><input type="checkbox" id="i-consent" style="width:16px;height:16px;margin-top:2px;flex:none" onchange="chk8()"><span>J’accepte d’être rappelé par un professionnel partenaire, sans démarchage abusif.</span></label>
+            <p style="margin:0;font-size:12px;line-height:1.4;opacity:.7">Aucun démarchage abusif.</p>
           </div>
           <button class="cta cta-full" id="b8" disabled onclick="goWithSubmit()">Découvrir mon analyse →</button>
         </section>
@@ -3190,15 +3190,11 @@ function hintTel(){
   const t=document.getElementById('i-tel').value.trim();
   if(t&&!isValidPhone(t))genie('Vérifiez votre numéro : 10 chiffres, par exemple 06 12 34 56 78.');
 }
-let consentHinted=false;
 function chk8(){
   const p=document.getElementById('i-prenom').value;
   const n=document.getElementById('i-nom').value;
   const t=document.getElementById('i-tel').value.trim();
-  const infoOk=isValidPersonName(p)&&isValidPersonName(n)&&isValidPhone(t);
-  const consent=document.getElementById('i-consent').checked;
-  document.getElementById('b8').disabled=!(infoOk&&consent);
-  if(infoOk&&!consent&&!consentHinted){consentHinted=true;genie('Il ne reste qu’à cocher la case pour continuer.');}
+  document.getElementById('b8').disabled=!(isValidPersonName(p)&&isValidPersonName(n)&&isValidPhone(t));
 }
 
 // ===== VÉRIFICATION SMS (OTP) =====
@@ -3210,7 +3206,7 @@ async function goWithSubmit(){
   if(submitInProgress) return;
   const prenom=document.getElementById('i-prenom').value;
   const nom=document.getElementById('i-nom').value;
-  if(!isValidPersonName(prenom)||!isValidPersonName(nom)||!isValidPhone(document.getElementById('i-tel').value)||!document.getElementById('i-consent').checked){chk8();return;}
+  if(!isValidPersonName(prenom)||!isValidPersonName(nom)||!isValidPhone(document.getElementById('i-tel').value)){chk8();return;}
   submitInProgress = true;
 
   const btn = document.getElementById('b8');
@@ -3452,7 +3448,7 @@ async function submitToAirtable(){
     nomPrenom: (document.getElementById('i-prenom').value.trim() + ' ' + document.getElementById('i-nom').value.trim()).trim(),
     telephone: document.getElementById('i-tel').value.trim(),
     objectifs: Array.from(OBJ),
-    consentement: D.consentement || (document.getElementById('i-consent').checked ? 'Oui, avec plaisir' : ''),
+    consentement: D.consentement || '',
     emailConsentement: D.emailConsentement || ''
   };
 
