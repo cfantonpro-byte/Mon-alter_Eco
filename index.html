@@ -2574,6 +2574,20 @@ function getVisitorId(){
     return null; // navigation privée / stockage bloqué : on continue sans
   }
 }
+// Origine du visiteur : sous-domaine du simulateur (tester., decouvrir., pistes.…) + code du compte qui a envoyé le
+// lien (?s=…, gardé pour la session). Sert uniquement à savoir quel lien amène des visites et des leads.
+const ORIGINE = (function(){
+  try{
+    const m = location.hostname.match(/^([a-z0-9-]+)\.mon-alter-eco\.fr$/i);
+    let s = new URLSearchParams(location.search).get('s') || '';
+    if(s){ try{ sessionStorage.setItem('alterEcoS', s); }catch(_e){} }
+    else { try{ s = sessionStorage.getItem('alterEcoS') || ''; }catch(_e){} }
+    s = s.replace(/[^a-z0-9]/gi, '').slice(0, 12);
+    return [m ? m[1].toLowerCase() : '', s].filter(Boolean).join(' · ');
+  }catch(_error){
+    return '';
+  }
+})();
 function trackEvent(nom, detail, etape){
   if(window.ALTER_ECO_TEST_MODE) return;
   try{
@@ -2585,7 +2599,7 @@ function trackEvent(nom, detail, etape){
     fetch('/.netlify/functions/track-event', {
       method:'POST', keepalive:true,
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({sessionId: window.__sessionId, visitorId: getVisitorId(), evenement: nom, detail: detail||'', etape: etape})
+      body: JSON.stringify({sessionId: window.__sessionId, visitorId: getVisitorId(), evenement: nom, detail: detail||'', etape: etape, origine: ORIGINE})
     }).catch(()=>{});
   }catch(_error){
     // Le suivi reste toujours secondaire : il ne doit jamais bloquer le questionnaire.
@@ -3449,7 +3463,8 @@ async function submitToAirtable(){
     telephone: document.getElementById('i-tel').value.trim(),
     objectifs: Array.from(OBJ),
     consentement: D.consentement || '',
-    emailConsentement: D.emailConsentement || ''
+    emailConsentement: D.emailConsentement || '',
+    origine: ORIGINE
   };
 
   if(!window.ALTER_ECO_TEST_MODE){
