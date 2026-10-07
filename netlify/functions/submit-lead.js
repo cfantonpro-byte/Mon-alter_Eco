@@ -84,10 +84,7 @@ exports.handler = async (event) => {
 
     "Email": lead.emailConsentement || "",
 
-    "Source": "Mon Alter-Eco – Site web",
-
-    // Sous-domaine du simulateur + code du compte qui a envoyé le lien (ex. « tester · 3f9a1 »).
-    "Lien d'origine": String(lead.origine || "").slice(0, 60)
+    "Source": "Mon Alter-Eco – Site web"
   };
 
   // Airtable n'aime pas les valeurs null/undefined/vides.
@@ -135,7 +132,7 @@ exports.handler = async (event) => {
 
   // Envoi des données vers Airtable
   try {
-    const envoyer = () => fetch(
+    const response = await fetch(
       `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(table)}`,
       {
         method: "POST",
@@ -154,17 +151,7 @@ exports.handler = async (event) => {
       }
     );
 
-    let response = await envoyer();
-    let data = await response.json();
-
-    // Un lead ne doit JAMAIS être perdu à cause du suivi d'origine : si la colonne « Lien d'origine » n'existe
-    // pas (ou plus) dans Airtable, on renvoie le lead sans elle.
-    if (!response.ok && data.error?.type === "UNKNOWN_FIELD_NAME" && "Lien d'origine" in fields) {
-      console.error("Colonne « Lien d'origine » introuvable, lead enregistré sans elle:", data.error);
-      delete fields["Lien d'origine"];
-      response = await envoyer();
-      data = await response.json();
-    }
+    const data = await response.json();
 
     // Gestion des erreurs Airtable
     if (!response.ok) {
