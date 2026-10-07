@@ -45,9 +45,7 @@ exports.handler = async (event) => {
     "Visitor ID": payload.visitorId || "",
     "Événement": payload.evenement || "",
     "Détail": payload.detail || "",
-    "Étape": payload.etape,
-    // Sous-domaine du simulateur + code du compte qui a envoyé le lien (ex. « tester · 3f9a1 »).
-    "Lien d'origine": String(payload.origine || "").slice(0, 60)
+    "Étape": payload.etape
   };
 
   // Airtable n'aime pas les valeurs null/undefined/vides.
@@ -62,7 +60,7 @@ exports.handler = async (event) => {
   });
 
   try {
-    const envoyer = () => fetch(
+    const response = await fetch(
       `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(table)}`,
       {
         method: "POST",
@@ -81,15 +79,7 @@ exports.handler = async (event) => {
       }
     );
 
-    let response = await envoyer();
-    let data = await response.json();
-
-    // Le suivi ne doit pas s'interrompre si la colonne « Lien d'origine » venait à manquer : on réessaie sans elle.
-    if (!response.ok && data.error?.type === "UNKNOWN_FIELD_NAME" && "Lien d'origine" in fields) {
-      delete fields["Lien d'origine"];
-      response = await envoyer();
-      data = await response.json();
-    }
+    const data = await response.json();
 
     if (!response.ok) {
       console.error("Erreur Airtable:", data);
