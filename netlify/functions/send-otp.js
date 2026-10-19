@@ -10,7 +10,7 @@ exports.handler = async (event) => {
     }
 
     // On suppose un numéro français : on ajoute +33 si besoin
-    let to = telephone.trim().replace(/\s/g, "");
+    let to = telephone.trim().replace(/[^\d+]/g, ""); // points, tirets, parenthèses acceptés par le formulaire
     if (to.startsWith("0")) to = "+33" + to.slice(1);
     else if (!to.startsWith("+")) to = "+33" + to;
 

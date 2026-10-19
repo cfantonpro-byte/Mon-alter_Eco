@@ -9,7 +9,7 @@ exports.handler = async (event) => {
       return { statusCode: 400, body: JSON.stringify({ error: "Numéro ou code manquant" }) };
     }
 
-    let to = telephone.trim().replace(/\s/g, "");
+    let to = telephone.trim().replace(/[^\d+]/g, ""); // points, tirets, parenthèses acceptés par le formulaire
     if (to.startsWith("0")) to = "+33" + to.slice(1);
     else if (!to.startsWith("+")) to = "+33" + to;
 
