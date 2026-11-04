@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Mon Alter-eco : Génie de l'investissement</title>
+<link rel="icon" href="favicon.png">
+<style>
+html,body{margin:0;height:100%;overflow:hidden}
+body{background:radial-gradient(ellipse at 50% 30%,#1b4180 0%,#0b2250 45%,#050f26 100%)}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 50% 108%,rgba(215,168,66,.22),transparent 55%);pointer-events:none}
+.stage{position:absolute;left:50%;top:50%;width:422px;height:876px;margin:-438px 0 0 -211px}
+.phone{position:relative;width:422px;height:876px;box-sizing:border-box;padding:6px;border-radius:70px;
+  background:linear-gradient(135deg,#e9e3d3 0%,#9a9587 16%,#f4efe2 34%,#847f72 52%,#d8d2c1 72%,#8f8a7d 88%,#c9c3b2 100%);
+  box-shadow:0 60px 110px rgba(0,0,0,.6),0 18px 40px rgba(0,0,0,.4),inset 0 0 0 1px rgba(255,255,255,.55),inset 0 0 0 3px rgba(60,56,48,.55)}
+.bezel{width:100%;height:100%;box-sizing:border-box;padding:10px;border-radius:64px;background:#04050a;box-shadow:inset 0 0 0 2px #15171f}
+.screen{position:relative;width:390px;height:844px;border-radius:54px;overflow:hidden;background:#05203f}
+.status{position:absolute;z-index:2;top:0;left:0;right:0;height:47px;background:#05203f;color:#fff;font:600 15px/1 -apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif}
+.status .time{position:absolute;left:38px;top:17px;letter-spacing:.2px}
+.status .icons{position:absolute;right:30px;top:17px;display:flex;gap:6px;align-items:center}
+.island{position:absolute;left:50%;top:11px;width:118px;height:34px;margin-left:-59px;border-radius:20px;background:#000;box-shadow:inset 0 0 0 1px #12141b}
+.island::after{content:"";position:absolute;right:16px;top:11px;width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#26304a,#07080d 70%)}
+.screen iframe{position:absolute;left:0;top:47px;width:390px;height:775px;border:0;background:#fff}
+.home{position:absolute;left:0;right:0;bottom:0;height:22px;background:#f8f3ea}
+.home::after{content:"";position:absolute;left:50%;bottom:7px;width:136px;height:5px;margin-left:-68px;border-radius:3px;background:#0b1220}
+.glass{position:absolute;inset:0;z-index:3;border-radius:54px;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.1) 0%,rgba(255,255,255,0) 28%,rgba(255,255,255,0) 72%,rgba(255,255,255,.05) 100%)}
+.key{position:absolute;width:5px;border-radius:3px;background:linear-gradient(90deg,#6f6a5e,#e4decd 45%,#8c8777)}
+.key.l{left:-4px}.key.r{right:-4px;transform:scaleX(-1)}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="phone">
+    <i class="key l" style="top:156px;height:36px"></i>
+    <i class="key l" style="top:218px;height:66px"></i>
+    <i class="key l" style="top:298px;height:66px"></i>
+    <i class="key r" style="top:250px;height:104px"></i>
+    <div class="bezel">
+      <div class="screen">
+        <div class="status">
+          <span class="time" id="clock"></span>
+          <div class="island"></div>
+          <span class="icons">
+            <svg width="18" height="12" viewBox="0 0 18 12" fill="#fff"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+            <svg width="17" height="12" viewBox="0 0 17 12" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M1.5 4.2a10 10 0 0 1 14 0"/><path d="M4 7a6.4 6.4 0 0 1 9 0"/><circle cx="8.5" cy="10" r="1" fill="#fff" stroke="none"/></svg>
+            <svg width="27" height="13" viewBox="0 0 27 13" fill="none"><rect x=".5" y=".5" width="22" height="12" rx="3.5" stroke="#fff" opacity=".45"/><rect x="2" y="2" width="19" height="9" rx="2.2" fill="#fff"/><path d="M24.5 4.5v4a2 2 0 0 0 0-4Z" fill="#fff" opacity=".5"/></svg>
+          </span>
+        </div>
+        <iframe id="app" title="Simulateur Mon Alter-€co"></iframe>
+        <div class="home"></div>
+        <div class="glass"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+// Téléphone, tablette ou fenêtre étroite (lien copié depuis un ordinateur) : pas de cadre, la vraie page.
+if(screen.width>=700&&matchMedia('(pointer:fine)').matches)document.getElementById('app').src='index.html'+location.search;
+else location.replace('index.html'+location.search);
+function tick(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}
+tick();setInterval(tick,10000);
+function fit(){var s=Math.min(1,(innerHeight-24)/876,(innerWidth-24)/422);document.getElementById('stage').style.transform='scale('+s+')'}
+fit();addEventListener('resize',fit);
+</script>
+</body>
+</html>
