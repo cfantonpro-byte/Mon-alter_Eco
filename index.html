@@ -12,6 +12,15 @@
     || alterEcoHost.startsWith('100.')
     || alterEcoHost.endsWith('.ts.net');
   if(window.ALTER_ECO_TEST_MODE) document.documentElement.classList.add('test-mode');
+  // Ouvert sur ordinateur : phone.html affiche cette même page dans un cadre de téléphone
+  // (dans l'iframe, self !== top). Cette page-ci va disparaître : son suivi est coupé pour
+  // ne pas compter la visite deux fois, le vrai chargement est celui du cadre.
+  // screen.width et non innerWidth : innerWidth vaut 0 au chargement dans un onglet en arrière-plan.
+  if(window.self === window.top && window.screen.width >= 700 && window.matchMedia('(pointer:fine)').matches){
+    window.ALTER_ECO_TEST_MODE = true;
+    document.documentElement.style.visibility = 'hidden';
+    window.location.replace('phone.html' + window.location.search);
+  }
   // Variante d'expérimentation masquée : étape 8 réduite aux seules
   // coordonnées (sans les cartes potentiel/pistes/économie), accessible
   // uniquement via ?variant=lite — n'affecte jamais les visiteurs normaux
