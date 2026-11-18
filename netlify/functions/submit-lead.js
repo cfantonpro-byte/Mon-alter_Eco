@@ -87,7 +87,12 @@ exports.handler = async (event) => {
     "Source": "Mon Alter-Eco – Site web",
 
     // Sous-domaine du simulateur + code du compte qui a envoyé le lien (ex. « tester · 3f9a1 »).
-    "Lien d'origine": String(lead.origine || "").slice(0, 60)
+    "Lien d'origine": String(lead.origine || "").slice(0, 60),
+
+    // Pistes présentées au prospect dans son étude (ex. « Plan d’épargne retraite, Girardin industriel »).
+    "Solutions identifiées": Array.isArray(lead.solutions)
+      ? lead.solutions.map(String).join(", ").slice(0, 500)
+      : ""
   };
 
   // Airtable n'aime pas les valeurs null/undefined/vides.
@@ -157,11 +162,14 @@ exports.handler = async (event) => {
     let response = await envoyer();
     let data = await response.json();
 
-    // Un lead ne doit JAMAIS être perdu à cause du suivi d'origine : si la colonne « Lien d'origine » n'existe
-    // pas (ou plus) dans Airtable, on renvoie le lead sans elle.
-    if (!response.ok && data.error?.type === "UNKNOWN_FIELD_NAME" && "Lien d'origine" in fields) {
-      console.error("Colonne « Lien d'origine » introuvable, lead enregistré sans elle:", data.error);
-      delete fields["Lien d'origine"];
+    // Un lead ne doit JAMAIS être perdu à cause d'une colonne facultative : si Airtable refuse
+    // « Lien d'origine » ou « Solutions identifiées » (colonne absente ou mal typée), on renvoie le lead sans elle.
+    let refusee;
+    while (!response.ok && (refusee = ["Lien d'origine", "Solutions identifiées"].find(
+      (champ) => champ in fields && JSON.stringify(data.error || "").includes(champ)
+    ))) {
+      console.error(`Colonne « ${refusee} » refusée par Airtable, lead enregistré sans elle:`, data.error);
+      delete fields[refusee];
       response = await envoyer();
       data = await response.json();
     }
