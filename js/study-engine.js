@@ -79,6 +79,29 @@ const ALTER_ECO_SOLUTIONS = [
     lever: 'Sécuriser les personnes et revenus qui comptent',
     conditions: ['Chiffrer les revenus à protéger', 'Inventorier les garanties déjà détenues', 'Comparer exclusions, délais et franchises'],
     vigilance: 'Le niveau de couverture dépend des garanties, exclusions, délais de carence et conditions médicales du contrat.'
+  },
+  // Pistes complémentaires : jamais mises en avant tant qu'une autre piste existe.
+  // Règles vérifiées (nov. 2026) : CGI art. 199 undecies B et guide AMF/DGCCRF « Girardin » ;
+  // economie.gouv.fr et ANIL pour le Denormandie (prorogé jusqu'au 31/12/2027 par la LF 2026).
+  {
+    id: 'girardin', name: 'Girardin industriel', type: 'Réduction d’impôt · Outre-mer', complementary: true,
+    goals: ['Réduire mon imposition'],
+    positives: () => 1,
+    exclude: () => false,
+    benefit: 'Une solution de réduction d’impôt reposant sur le financement d’activités économiques en outre-mer. Sa pertinence doit être étudiée selon votre situation fiscale.',
+    lever: 'Étudier un levier de réduction d’impôt',
+    conditions: ['Comparer la réduction visée à votre impôt et au plafonnement global des avantages fiscaux', 'Examiner le montage, l’exploitant en outre-mer et l’agrément éventuellement requis', 'Tenir compte des durées de détention et d’exploitation à respecter'],
+    vigilance: 'Ce n’est ni une épargne ni une source de revenus : les sommes versées ne sont pas restituées et l’intérêt repose uniquement sur la réduction d’impôt, qui peut être remise en cause si les conditions du dispositif ne sont plus respectées, y compris du fait de l’exploitant.'
+  },
+  {
+    id: 'denormandie', name: 'Dispositif Denormandie', type: 'Immobilier ancien & fiscalité', complementary: true,
+    goals: ["Investir dans l'immobilier", 'Réduire mon imposition'], minGoalMatches: 2,
+    positives: () => 0,
+    exclude: () => false,
+    benefit: 'Un investissement locatif dans un logement ancien avec travaux, pouvant ouvrir droit à une réduction d’impôt sous conditions.',
+    lever: 'Rénover un logement ancien pour le louer',
+    conditions: ['Vérifier que la commune du logement fait partie des communes éligibles', 'Prévoir des travaux représentant au moins 25 % du coût total de l’opération', 'Louer le logement nu, en résidence principale, pendant 6, 9 ou 12 ans, dans le respect des plafonds de loyer et de ressources'],
+    vigilance: 'La réduction d’impôt n’est pas automatique : elle suppose de respecter toutes les conditions pendant la durée d’engagement. Un investissement immobilier est peu liquide et comporte des risques locatifs, de travaux et de perte en capital.'
   }
 ];
 
@@ -185,6 +208,8 @@ function pickFeaturedSolution(solutions){
   if(!solutions.length) return null;
   const partnerSolution = solutions.find(s => s.partner && s.score >= (s.minScore || 0));
   if(partnerSolution) return partnerSolution;
+  const main = solutions.filter(s => !s.complementary);
+  if(main.length) solutions = main;
   // Tirage au sort parmi les solutions à égalité du meilleur score, pour ne
   // pas toujours mettre en avant la même solution par simple effet d'ordre
   // dans ALTER_ECO_SOLUTIONS.

@@ -7,12 +7,6 @@ const withStudyzEnabled = fn => () => {
   solution.enabled=true;
   try{fn();}finally{solution.enabled=previous;}
 };
-test('Stüdyz reste conservé mais désactivé dans toutes les études', () => {
-  assert.equal(engine.library.find(s=>s.id==='studyz').enabled,false);
-  const study=engine.buildStudy({objectifs:["Investir dans l'immobilier",'Valoriser mon épargne'],mensuel:500,epargne:40000,codePostal:'33000',age:36});
-  assert.ok(!study.solutions.some(s=>s.id==='studyz'));
-  assert.notEqual(study.featured?.id,'studyz');
-});
 
 const profiles = {
   A: {age:25,statut:'Salarié',famille:'Célibataire',objectifs:['Valoriser mon épargne'],impot:500,mensuel:50,epargne:5000},
@@ -79,4 +73,26 @@ test('les entrées invalides sont neutralisées', () => {
   assert.equal(profile.epargne, 0);
   assert.equal(profile.mensuel, 0);
   assert.deepEqual(profile.objectifs, []);
+});
+
+test('Girardin apparaît pour tout prospect visant à réduire ses impôts, et seulement lui', () => {
+  for(const [name, profile] of Object.entries(profiles)){
+    const ids = engine.buildStudy(profile).solutions.map(solution => solution.id);
+    assert.equal(ids.includes('girardin'), profile.objectifs.includes('Réduire mon imposition'), `profil ${name}`);
+  }
+  assert.ok(engine.buildStudy({objectifs:['Réduire mes impôts'],impot:500}).solutions.some(s=>s.id==='girardin'));
+});
+
+test('Denormandie exige à la fois l’immobilier et la réduction d’impôt', () => {
+  const has = objectifs => engine.buildStudy({objectifs}).solutions.some(s=>s.id==='denormandie');
+  assert.ok(has(["Investir dans l'immobilier",'Réduire mon imposition']));
+  assert.ok(!has(["Investir dans l'immobilier"]));
+  assert.ok(!has(['Réduire mon imposition']));
+});
+
+test('Stüdyz garde la place prioritaire et les pistes complémentaires ne passent jamais devant', () => {
+  const study = engine.buildStudy(profiles.D);
+  assert.ok(study.solutions.some(s=>s.id==='denormandie') && study.solutions.some(s=>s.id==='girardin'));
+  assert.equal(study.featured.id, 'studyz');
+  for(let i = 0; i < 50; i++) assert.ok(!engine.buildStudy(profiles.C).featured.complementary);
 });
